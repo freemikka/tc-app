@@ -13,7 +13,14 @@ import morgan from "morgan";
 
 const app = express();
 app.use(morgan("dev"));
-app.use(cors());
+app.use(
+    cors({
+        origin: [
+            "https://your-frontend-service.onrender.com",
+            "http://localhost:5000", // For local development
+        ],
+    })
+);
 app.use(express.json());
 
 app.use("/api", playersRouter);
