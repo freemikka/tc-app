@@ -1,5 +1,4 @@
 import supabase from "../utils/supabase"; // Import your supabase client
-import apiClient, { setAuthToken } from "../api/client";
 
 export const loginUser = async (email: string, password: string) => {
     try {
