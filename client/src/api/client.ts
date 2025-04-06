@@ -2,7 +2,10 @@ import axios from "axios";
 import supabase from "../utils/supabase";
 
 const apiClient = axios.create({
-    baseURL: "https://tc-app-server.onrender.com/api",
+    baseURL:
+        process.env.NODE_ENV === "development"
+            ? "/api"
+            : "https://tc-app-server.onrender.com/api",
     headers: {
         "Content-Type": "application/json",
     },

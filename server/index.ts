@@ -17,7 +17,7 @@ app.use(
     cors({
         origin: [
             "https://tc-app-frontend.onrender.com",
-            "http://localhost:5000", // For local development
+            "http://localhost:5173", // For local development
         ],
     })
 );
