@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import supabase from "../supabase/supabase.ts";
-import { authMiddleware } from "../middleware/auth.ts";
+import supabase from "../supabase/supabase.js";
+import { authMiddleware } from "../middleware/auth.js";
 
 dotenv.config();
 

@@ -1,8 +1,8 @@
 import express, { Router, Request } from "express";
-import { authMiddleware } from "../middleware/auth.ts";
-import { associationMiddleware } from "../middleware/associationMiddleware.ts";
-import { TeamWithPlayers } from "../types/types";
-import supabase from "../supabase/supabase.ts";
+import { authMiddleware } from "../middleware/auth.js";
+import { associationMiddleware } from "../middleware/associationMiddleware.js";
+import { TeamWithPlayers } from "../types/types.js";
+import supabase from "../supabase/supabase.js";
 const baseUrl = "/teams";
 
 const router: Router = express.Router();

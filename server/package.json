@@ -2,11 +2,12 @@
     "name": "server",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "index.ts",
     "scripts": {
-        "start": "json-server --watch db.json --port 5000",
-        "dev": "nodemon index.ts",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node build/index.js",
+        "dev": "nodemon --exec node --loader ts-node/esm index.ts",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc"
     },
     "keywords": [],
     "author": "",

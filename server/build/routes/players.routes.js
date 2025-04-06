@@ -5,58 +5,43 @@ import { authMiddleware } from "../middleware/auth.js";
 import { teamMiddleware } from "../middleware/teamMiddleware.js";
 import { associationMiddleware } from "../middleware/associationMiddleware.js";
 import { positionMiddleware } from "../middleware/positionMiddleware.js";
-
 dotenv.config();
-
 const router = express.Router();
 const baseUrl = "/players";
-
 router.get(baseUrl, authMiddleware, async (_req, res) => {
     const { data, error } = await supabase.from("Players").select();
-
     if (error) {
         console.error("Error fetching players:", error);
         return res.status(500).json({ error: error.message });
     }
-
     res.json(data);
 });
-
-router.post(
-    baseUrl,
-    authMiddleware,
-    associationMiddleware,
-    teamMiddleware,
-    positionMiddleware,
-    async (req, res) => {
-        try {
-            const team_id = req.team_id;
-            const association_id = req.association_id;
-            const position_id = req.position_id;
-
-            const { firstName, lastName, email } = req.body;
-            const { data, error } = await supabase
-                .from("Players")
-                .insert({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    team_id: team_id,
-                    association_id: association_id,
-                    position_id: position_id,
-                })
-                .select();
-
-            if (error) throw error;
-
-            return res.status(200).json(data);
-        } catch (error) {
-            if (error instanceof Error)
-                return res.status(500).json({ error: error.message });
-        }
+router.post(baseUrl, authMiddleware, associationMiddleware, teamMiddleware, positionMiddleware, async (req, res) => {
+    try {
+        const team_id = req.team_id;
+        const association_id = req.association_id;
+        const position_id = req.position_id;
+        const { firstName, lastName, email } = req.body;
+        const { data, error } = await supabase
+            .from("Players")
+            .insert({
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            team_id: team_id,
+            association_id: association_id,
+            position_id: position_id,
+        })
+            .select();
+        if (error)
+            throw error;
+        return res.status(200).json(data);
     }
-);
-
+    catch (error) {
+        if (error instanceof Error)
+            return res.status(500).json({ error: error.message });
+    }
+});
 router.put(baseUrl, authMiddleware, associationMiddleware, async (req, res) => {
     try {
         const { playerId, teamId } = req.body;
@@ -68,14 +53,13 @@ router.put(baseUrl, authMiddleware, associationMiddleware, async (req, res) => {
         console.log(data);
         console.log(error);
         console.log(playerId, " ", teamId);
-
-        if (error) throw error;
-
+        if (error)
+            throw error;
         return res.status(200).json(data);
-    } catch (error) {
+    }
+    catch (error) {
         if (error instanceof Error)
             return res.status(500).json({ error: error.message });
     }
 });
-
 export default router;
