@@ -1,0 +1,6 @@
+{
+    "players": [
+        { "id": 1, "name": "Michael Wheeler" },
+        { "id": 2, "name": "Koen Schellens" }
+    ]
+}
