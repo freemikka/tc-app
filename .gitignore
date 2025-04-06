@@ -2,6 +2,7 @@
 client/node_modules/
 client/.next/
 client/dist/
+client/.env
 
 # Server
 server/node_modules/
@@ -10,3 +11,4 @@ server/.env
 # General
 .DS_Store
 *.log
+
