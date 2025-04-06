@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 app.use(
     cors({
         origin: [
-            "https://your-frontend-service.onrender.com",
+            "https://tc-app-frontend.onrender.com",
             "http://localhost:5000", // For local development
         ],
     })
