@@ -15,7 +15,6 @@ const AssociationPicker = () => {
         const fetchAssociations = async () => {
             try {
                 const data = await getAllAssociations();
-                console.log("ass: ", data);
                 if (error) throw error;
                 if (data) {
                     setAllAssociations(data);

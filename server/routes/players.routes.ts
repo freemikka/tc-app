@@ -65,9 +65,6 @@ router.put(baseUrl, authMiddleware, associationMiddleware, async (req, res) => {
             .update({ team_id: teamId })
             .eq("id", playerId)
             .select();
-        console.log(data);
-        console.log(error);
-        console.log(playerId, " ", teamId);
 
         if (error) throw error;
 

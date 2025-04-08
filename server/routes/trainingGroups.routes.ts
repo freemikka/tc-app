@@ -3,7 +3,7 @@ import { authMiddleware } from "../middleware/auth.js";
 import { associationMiddleware } from "../middleware/associationMiddleware.js";
 import { TeamWithPlayers } from "../types/types.js";
 import supabase from "../supabase/supabase.js";
-const baseUrl = "/teams";
+const baseUrl = "/training-groups";
 
 const router: Router = express.Router();
 
@@ -14,7 +14,7 @@ router.get(
     async (req: Request, res) => {
         try {
             const { data: teams, error } = await supabase
-                .from("Teams")
+                .from("TrainingGroups")
                 .select("*")
                 .eq("association_id", req.association_id!);
 
@@ -48,7 +48,7 @@ router.get(
 
             if (!gender) {
                 return res.status(400).json({
-                    error: "Must send a gender when requesting teams with players",
+                    error: "Must send a gender when requesting training group with players",
                 });
             }
 
@@ -70,7 +70,7 @@ async function getTeamsWithPlayers(
 ): Promise<TeamWithPlayers[]> {
     // Fetch teams first
     const { data: teams, error: teamsError } = await supabase
-        .from("Teams")
+        .from("TrainingGroups")
         .select("*")
         .eq("association_id", associationId)
         .eq("gender", gender);
@@ -119,7 +119,7 @@ router.post(
             const association_id = req.association_id;
             const { name, gender } = req.body;
             const { data: teams, error } = await supabase
-                .from("Teams")
+                .from("TrainingGroups")
                 .insert({
                     association_id: association_id,
                     name: name,
@@ -139,29 +139,29 @@ router.post(
     }
 );
 
-router.delete(
-    `${baseUrl}/:id`, // Base URL with `:id` parameter
-    authMiddleware,
-    associationMiddleware,
-    async (req, res) => {
-        const teamId = req.params.id;
-        console.log(teamId);
+// router.delete(
+//     `${baseUrl}/:id`, // Base URL with `:id` parameter
+//     authMiddleware,
+//     associationMiddleware,
+//     async (req, res) => {
+//         const teamId = req.params.id;
+//         console.log(teamId);
 
-        try {
-            const { error } = await supabase.rpc("delete_team_and_players", {
-                team_id_to_delete: teamId,
-            });
+//         try {
+//             const { error } = await supabase.rpc("delete_team_and_players", {
+//                 team_id_to_delete: teamId,
+//             });
 
-            if (error) throw error;
+//             if (error) throw error;
 
-            res.status(200).json({
-                message: "Team and players deleted successfully",
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: "Failed to delete team" });
-        }
-    }
-);
+//             res.status(200).json({
+//                 message: "Team and players deleted successfully",
+//             });
+//         } catch (error) {
+//             console.log(error);
+//             res.status(500).json({ error: "Failed to delete team" });
+//         }
+//     }
+// );
 
 export default router;

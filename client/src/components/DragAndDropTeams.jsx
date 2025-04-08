@@ -4,18 +4,41 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { getTeamsWithPlayers } from "../services/teamService";
 import { updatePlayerTeam } from "../services/playerService";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
+import {
+    deleteHiddenTeam,
+    getAllHiddenTeams,
+} from "../services/hideTeamService";
 import supabase from "../utils/supabase";
 import TeamBox from "./TeamBox";
+import { getTrainingGroupsWithPlayers } from "../services/trainingGroupService";
+import Navbar from "./Navbar";
 
-const DragAndDropTeams = () => {
+const DragAndDropTeams = ({ gender }) => {
     const queryClient = useQueryClient();
 
     const { data: teams = [] } = useQuery({
         queryKey: ["teams"],
-        queryFn: getTeamsWithPlayers,
+        queryFn: () => getTeamsWithPlayers(gender),
     });
 
+    const { data: hiddenTeams = [] } = useQuery({
+        queryKey: ["hiddenTeams"],
+        queryFn: () => getAllHiddenTeams(gender),
+    });
+
+    const { data: trainingGroups = [] } = useQuery({
+        queryKey: ["trainingGroups"],
+        queryFn: () => getTrainingGroupsWithPlayers(gender),
+    });
+
+    // Show female and male teams for each page, also dont show hidden teams per gender
+    const visibleTeams = teams.filter(
+        (team) =>
+            !hiddenTeams.some((hiddenTeam) => hiddenTeam.team_id === team.id)
+    );
+
     React.useEffect(() => {
+        queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
         const channel = supabase
             .channel("players-changes")
             .on(
@@ -73,18 +96,80 @@ const DragAndDropTeams = () => {
         }
     };
 
+    const handleSetTeamVisibile = async (teamId) => {
+        try {
+            const response = await deleteHiddenTeam(teamId);
+            queryClient.invalidateQueries({ queryKey: ["hiddenTeams"] });
+        } catch (error) {
+            console.log("Error deleting team", error);
+        }
+    };
+
     return (
         <DndProvider backend={HTML5Backend}>
             <div
                 style={{
                     display: "grid",
+
                     gridTemplateColumns:
-                        "repeat(auto-fill, minmax(300px, 1fr))",
+                        "100px repeat(auto-fit, minmax(300px, 300px))",
                     gap: "16px",
+                    gridAutoColumns: "minmax(300px, 300px)",
                     padding: "16px",
+                    overflowX: "auto", // Enable horizontal scrolling
+                    // overflowY: "hidden", // Disable vertical scrolling
+                    gridAutoFlow: "column", // Force single row
+                    height: "100vh", // Prevent container from expanding
+                    // Scrollbar styling (cross-browser)
+                    paddingBottom: "100px", // Space for scrollbar
+                    marginBottom: "-6px", // Pulls scrollbar into padding area
+                    scrollbarGutter: "stable", // Prevents layout shift (modern browsers)
                 }}
             >
-                {teams.map((team) => (
+                <div
+                    style={{
+                        display: "grid",
+                        gridAutoRows: "50px",
+                        gridAutoColumns: "minmax(30px, 75px)",
+                    }}
+                >
+                    {hiddenTeams.length !== 0 ? (
+                        <div className="space-y-4">
+                            {" "}
+                            {/* Added wrapper div with spacing */}
+                            <h3 className="text-lg font-semibold">
+                                Hidden Teams
+                            </h3>{" "}
+                            {/* Heading */}
+                            <div className="flex flex-wrap gap-2">
+                                {" "}
+                                {/* Button container */}
+                                {hiddenTeams.map((hiddenTeam) => (
+                                    <button
+                                        className="
+                                        rounded-lg
+                                        bg-white
+                                        border-t border-r border-b border-black
+                                        px-4 py-2
+                                        cursor-pointer
+                                        hover:bg-gray-100
+                                        transition-colors
+                                    "
+                                        key={hiddenTeam.id}
+                                        onClick={() =>
+                                            handleSetTeamVisibile(hiddenTeam.id)
+                                        }
+                                    >
+                                        {hiddenTeam.Teams.name}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div>No teams hidden</div>
+                    )}
+                </div>
+                {visibleTeams.map((team) => (
                     <TeamBox
                         key={team.id}
                         team={team}

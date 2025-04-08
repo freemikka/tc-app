@@ -17,8 +17,8 @@ export const createTeam = async (newTeam: Team) => {
     return response.data;
 };
 
-export const getTeamsWithPlayers = async () => {
-    const response = await apiClient.get(`${baseUrl}/with-players`);
+export const getTeamsWithPlayers = async (gender: string) => {
+    const response = await apiClient.get(`${baseUrl}/with-players/${gender}`);
     return response.data;
 };
 
@@ -27,7 +27,7 @@ export const getTeamsWithPlayers = async () => {
 //   return request.then((response) => response.data);
 // };
 
-// const deletePerson = (id) => {
-//   const request = axios.delete(`${baseUrl}/${id}`);
-//   return request.then((response) => response.data);
-// };
+export const deleteTeam = async (id: string) => {
+    const response = await apiClient.delete(`${baseUrl}/${id}`);
+    return response.data;
+};

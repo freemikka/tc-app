@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddPlayerForm from "./AddPlayerForm";
 import AddTeamForm from "./AddTeamForm";
+import AddTrainingGroupForm from "./AddTrainingGroupForm";
 import { signOutUser } from "../services/authService";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useAuth } from "../hooks/useAuth";
@@ -70,6 +71,14 @@ function Navbar() {
                                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
                             >
                                 Add player
+                            </button>
+                            <button
+                                onClick={() => {
+                                    openModal("addTrainingGroup");
+                                }}
+                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+                            >
+                                Add Training Group
                             </button>
                         </div>
                     </div>
@@ -204,6 +213,9 @@ function Navbar() {
                                                 "Contact Us"}
                                             {activeModal === "addPlayer" &&
                                                 "Add Player"}
+                                            {activeModal ===
+                                                "addTrainingGroup" &&
+                                                "Add Training Group"}
                                         </h3>
                                         <div className="mt-2">
                                             {activeModal === "about" && (
@@ -224,6 +236,10 @@ function Navbar() {
                                             )}
                                             {activeModal === "addPlayer" && (
                                                 <AddPlayerForm />
+                                            )}
+                                            {activeModal ===
+                                                "addTrainingGroup" && (
+                                                <AddTrainingGroupForm />
                                             )}
                                         </div>
                                     </div>
