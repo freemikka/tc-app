@@ -11,7 +11,7 @@ export const getAllHiddenTrainingGroups = async (gender: string) => {
     }
 };
 
-export const createTrainingGroup = async (trainingGroupId: number) => {
+export const createHiddenTrainingGroup = async (trainingGroupId: number) => {
     const response = await apiClient.post(baseUrl, {
         trainingGroupId: trainingGroupId,
     });
@@ -28,7 +28,7 @@ export const createTrainingGroup = async (trainingGroupId: number) => {
 //   return request.then((response) => response.data);
 // };
 
-export const deleteHiddentrainingGroup = async (id: string) => {
+export const deleteHiddenTrainingGroup = async (id: string) => {
     const response = await apiClient.delete(`${baseUrl}/${id}`);
     return response.data;
 };

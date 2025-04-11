@@ -6,6 +6,8 @@ import { createHiddenTeam } from "../services/hideTeamService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import DotMenu from "./DotMenu";
 import { useCreateHiddenTeam } from "../mutations/createHiddenTeams";
+import { useCreateHiddenTrainingGroups } from "../mutations/createHiddenTrainingGroups";
+import { useDeleteTrainingGroup } from "../mutations/deleteTrainingGroup";
 
 const TeamBox = ({ team, onDrop, queryKey }) => {
     const queryClient = useQueryClient();
@@ -24,19 +26,32 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
     const teamBoxLength = Math.max(sortedPlayers.length * 9.5, 100);
 
     const { mutate: createHidden } = useCreateHiddenTeam();
+    const { mutate: createHiddenTrainingGroup } =
+        useCreateHiddenTrainingGroups();
+    const { mutate: deleteTrainingGroup } = useDeleteTrainingGroup();
 
     const handleHideTeam = (teamId) => {
-        createHidden(teamId);
+        if (queryKey == "teamsWithPlayers") {
+            createHidden(teamId);
+        } else {
+            createHiddenTrainingGroup(teamId);
+        }
     };
 
     const handleMenuClick = async (option) => {
         // handleClose();
         if (option === 0) {
             try {
-                const response = await deleteTeam(team.id); // Pass teamId to your service
-                queryClient.invalidateQueries({
-                    queryKey: [queryKey],
-                });
+                if (queryKey == "teamsWithPlayers") {
+                    await deleteTeam(team.id); // Pass teamId to your service
+                    queryClient.invalidateQueries({
+                        queryKey: [queryKey],
+                    });
+                } else {
+                    console.log("here");
+                    deleteTrainingGroup(team.id); // Pass teamId to your service
+                }
+
                 // Handle successful deletion (maybe update parent component state)
             } catch (error) {
                 console.error("Error deleting team:", error);

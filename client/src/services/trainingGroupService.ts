@@ -18,7 +18,6 @@ export const getTrainingGroupsWithPlayers = async (gender: string) => {
 };
 
 export const createTrainingGroup = async (newTrainingGroup: trainingGroup) => {
-    console.log("createTrainingGroup");
     const response = await apiClient.post<trainingGroup>(
         baseUrl,
         newTrainingGroup
@@ -31,7 +30,7 @@ export const createTrainingGroup = async (newTrainingGroup: trainingGroup) => {
 //   return request.then((response) => response.data);
 // };
 
-// export const deleteTeam = async (id: string) => {
-//     const response = await apiClient.delete(`${baseUrl}/${id}`);
-//     return response.data;
-// };
+export const deleteTrainingGroup = async (id: string) => {
+    const response = await apiClient.delete(`${baseUrl}/${id}`);
+    return response.data;
+};

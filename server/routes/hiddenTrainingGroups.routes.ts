@@ -16,7 +16,7 @@ router.get(
         const association_id = req.association_id;
         const user_id = req.user?.id;
         try {
-            const { data: teams, error } = await supabase
+            const { data: trainingGroups, error } = await supabase
                 .from("HiddenTrainingGroups")
                 .select(
                     `*,
@@ -32,7 +32,7 @@ router.get(
                 return res.status(500).json({ error: "Database error" });
             }
 
-            res.json(teams);
+            res.json(trainingGroups);
         } catch (error) {
             console.error("Error fetching hidden training groups:", error);
             res.status(500).json({ error: "Internal server error" });
@@ -47,16 +47,15 @@ router.post(
     async (req: Request, res) => {
         const association_id = req.association_id;
         const user_id = req.user?.id;
-        const { teamId } = req.body;
-
+        const { trainingGroupId } = req.body;
         try {
             const association_id = req.association_id;
             const { data: teams, error } = await supabase
-                .from("TrainingGroups")
+                .from("HiddenTrainingGroups")
                 .insert({
                     association_id: association_id,
                     user_id: user_id,
-                    team_id: teamId,
+                    traininggroup_id: trainingGroupId,
                 })
                 .select();
             if (error) {
@@ -72,28 +71,30 @@ router.post(
     }
 );
 
-// router.delete(
-//     `${baseUrl}/:id`, // Base URL with `:id` parameter
-//     authMiddleware,
-//     associationMiddleware,
-//     async (req, res) => {
-//         const teamId = req.params.id;
+router.delete(
+    `${baseUrl}/:id`, // Base URL with `:id` parameter
+    authMiddleware,
+    associationMiddleware,
+    async (req, res) => {
+        const trainingGroupId = req.params.id;
+        try {
+            const { error } = await supabase.rpc(
+                "deletehiddentraininggroupbyid",
+                {
+                    traininggroupid: trainingGroupId,
+                }
+            );
 
-//         try {
-//             const { error } = await supabase.rpc("delete_hidden_team", {
-//                 team_id_to_delete: teamId,
-//             });
+            if (error) throw error;
 
-//             if (error) throw error;
-
-//             res.status(200).json({
-//                 message: "Training Groups and players deleted successfully",
-//             });
-//         } catch (error) {
-//             console.log(error);
-//             res.status(500).json({ error: "Failed to delete team" });
-//         }
-//     }
-// );
+            res.status(200).json({
+                message: "Hidden Training Groups deleted successfully",
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: "Failed to delete team" });
+        }
+    }
+);
 
 export default router;

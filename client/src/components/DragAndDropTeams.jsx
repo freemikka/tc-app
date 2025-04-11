@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { getTeamsWithPlayers } from "../services/teamService";
@@ -15,6 +15,8 @@ import supabase from "../utils/supabase";
 import TeamBox from "./TeamBox";
 import { useProfile } from "../hooks/useProfile";
 import { useTeamsHidden } from "../hooks/useTeamsHidden";
+import { useTrainingGroupsHidden } from "../hooks/useTrainingGroupsHidden";
+import { deleteHiddenTrainingGroup } from "../services/hideTrainingGroupService"; // USE MUTATION
 
 const DragAndDropTeams = ({ gender, data, queryKey }) => {
     const queryClient = useQueryClient();
@@ -25,12 +27,22 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
     } = useProfile();
 
     const { data: teamsHidden = [] } = useTeamsHidden(gender);
-    // console.log("data", data);
+    const { data: trainingGroupsHidden = [] } = useTrainingGroupsHidden(gender);
+
+    const hideTheseTeams = useMemo(() => {
+        return queryKey === "teamsWithPlayers"
+            ? teamsHidden
+            : trainingGroupsHidden;
+    }, [queryKey, teamsHidden, trainingGroupsHidden]);
 
     //  dont show hidden teams
-    const visibleTeams = data.filter(
-        (team) =>
-            !teamsHidden.some((hiddenTeam) => hiddenTeam.team_id === team.id)
+    const visibleTeams = data.filter((team) =>
+        queryKey === "teamsWithPlayers"
+            ? !teamsHidden.some((hiddenTeam) => hiddenTeam.team_id === team.id)
+            : !trainingGroupsHidden.some(
+                  (hiddenTrainingGroup) =>
+                      hiddenTrainingGroup.traininggroup_id === team.id
+              )
     );
 
     React.useEffect(() => {
@@ -92,7 +104,6 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
             if (queryKey == "teamsWithPlayers") {
                 await updatePlayerTeam(player.id, newTeamId);
             } else {
-                console.log("what>?>>");
                 await updatePlayerTrainingGroup(player.id, newTeamId);
             }
 
@@ -107,8 +118,15 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
 
     const handleSetTeamVisibile = async (teamId) => {
         try {
-            const response = await deleteHiddenTeam(teamId);
-            queryClient.invalidateQueries({ queryKey: ["teamsHidden"] });
+            if (queryKey === "teamsWithPlayers") {
+                await deleteHiddenTeam(teamId);
+                queryClient.invalidateQueries({ queryKey: ["teamsHidden"] });
+            } else {
+                await deleteHiddenTrainingGroup(teamId);
+                queryClient.invalidateQueries({
+                    queryKey: ["trainingGroupsHidden"],
+                });
+            }
         } catch (error) {
             console.log("Error deleting team", error);
         }
@@ -146,7 +164,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                         gridAutoColumns: "minmax(30px, 75px)",
                     }}
                 >
-                    {teamsHidden.length !== 0 ? (
+                    {hideTheseTeams.length !== 0 ? (
                         <div className="space-y-4">
                             {" "}
                             {/* Added wrapper div with spacing */}
@@ -157,7 +175,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                             <div className="flex flex-wrap gap-2">
                                 {" "}
                                 {/* Button container */}
-                                {teamsHidden.map((hiddenTeam) => (
+                                {hideTheseTeams.map((hiddenTeam) => (
                                     <button
                                         className="
                                         rounded-lg
@@ -173,7 +191,8 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                                             handleSetTeamVisibile(hiddenTeam.id)
                                         }
                                     >
-                                        {hiddenTeam.Teams.name}
+                                        {hiddenTeam.Teams?.name}{" "}
+                                        {hiddenTeam.TrainingGroups?.name}
                                     </button>
                                 ))}
                             </div>

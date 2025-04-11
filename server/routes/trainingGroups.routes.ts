@@ -139,29 +139,32 @@ router.post(
     }
 );
 
-// router.delete(
-//     `${baseUrl}/:id`, // Base URL with `:id` parameter
-//     authMiddleware,
-//     associationMiddleware,
-//     async (req, res) => {
-//         const teamId = req.params.id;
-//         console.log(teamId);
+router.delete(
+    `${baseUrl}/:id`, // Base URL with `:id` parameter
+    authMiddleware,
+    associationMiddleware,
+    async (req, res) => {
+        const trainingGroupId = req.params.id;
+        console.log(trainingGroupId);
 
-//         try {
-//             const { error } = await supabase.rpc("delete_team_and_players", {
-//                 team_id_to_delete: teamId,
-//             });
+        try {
+            const { error } = await supabase.rpc(
+                "delete_training_group_by_id",
+                {
+                    training_group_id: trainingGroupId,
+                }
+            );
 
-//             if (error) throw error;
+            if (error) throw error;
 
-//             res.status(200).json({
-//                 message: "Team and players deleted successfully",
-//             });
-//         } catch (error) {
-//             console.log(error);
-//             res.status(500).json({ error: "Failed to delete team" });
-//         }
-//     }
-// );
+            res.status(200).json({
+                message: "Training group deleted successfully",
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: "Failed to delete training group" });
+        }
+    }
+);
 
 export default router;
