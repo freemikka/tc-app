@@ -86,7 +86,7 @@ async function getTeamsWithPlayers(
         id,
         first_name,
         last_name,
-        team_id,
+        traininggroup_id,
         position_id,
         Positions (position_name)
       `
@@ -100,7 +100,7 @@ async function getTeamsWithPlayers(
     return teams.map((team) => ({
         ...team,
         players: players
-            .filter((player) => player.team_id === team.id)
+            .filter((player) => player.traininggroup_id === team.id)
             .map((player) => ({
                 id: player.id,
                 first_name: player.first_name,

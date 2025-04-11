@@ -2,7 +2,10 @@ import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { getTeamsWithPlayers } from "../services/teamService";
-import { updatePlayerTeam } from "../services/playerService";
+import {
+    updatePlayerTeam,
+    updatePlayerTrainingGroup,
+} from "../services/playerService";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import {
     deleteHiddenTeam,
@@ -11,6 +14,7 @@ import {
 import supabase from "../utils/supabase";
 import TeamBox from "./TeamBox";
 import { useProfile } from "../hooks/useProfile";
+import { useTeamsHidden } from "../hooks/useTeamsHidden";
 
 const DragAndDropTeams = ({ gender, data, queryKey }) => {
     const queryClient = useQueryClient();
@@ -20,20 +24,18 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
         isError: isUserError,
     } = useProfile();
 
-    const { data: hiddenTeams = [] } = useQuery({
-        queryKey: ["hiddenTeams"],
-        queryFn: () => getAllHiddenTeams(gender),
-    });
+    const { data: teamsHidden = [] } = useTeamsHidden(gender);
+    // console.log("data", data);
 
     //  dont show hidden teams
     const visibleTeams = data.filter(
         (team) =>
-            !hiddenTeams.some((hiddenTeam) => hiddenTeam.team_id === team.id)
+            !teamsHidden.some((hiddenTeam) => hiddenTeam.team_id === team.id)
     );
 
     React.useEffect(() => {
         if (isUserLoading) return;
-        queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
+        // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
         const channel = supabase
             .channel(`players-changes-${profile.association_id}`)
             .on(
@@ -46,11 +48,11 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                 },
                 (payload) => {
                     console.log("payload", payload);
-                    queryClient.invalidateQueries({ queryKey: ["teams"] });
+                    queryClient.invalidateQueries({ queryKey: [queryKey] });
                 }
             )
             .subscribe((status) => {
-                console.log(status);
+                // console.log(status);
             });
 
         return () => {
@@ -61,10 +63,12 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
     const handlePlayerDrop = async (player, newTeamId) => {
         if (!newTeamId) return;
 
-        const previousTeams = queryClient.getQueryData(["teams"]) || [];
+        const previousTeams = queryClient.getQueryData([queryKey]) || [];
+        // console.log("previousTeams", previousTeams);
 
         // Optimistic update
-        queryClient.setQueryData(["teams"], (oldTeams) => {
+        queryClient.setQueryData([queryKey], (oldTeams) => {
+            // console.log(oldTeams);
             return oldTeams.map((team) => {
                 // Remove player from old team
                 if (team.players.some((p) => p.id === player.id)) {
@@ -85,20 +89,26 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
         });
 
         try {
-            await updatePlayerTeam(player.id, newTeamId);
+            if (queryKey == "teamsWithPlayers") {
+                await updatePlayerTeam(player.id, newTeamId);
+            } else {
+                console.log("what>?>>");
+                await updatePlayerTrainingGroup(player.id, newTeamId);
+            }
+
             // Optionally invalidate to ensure sync with server
-            // queryClient.invalidateQueries({ queryKey: ["teams"] });
+            // queryClient.invalidateQueries({ queryKey: [queryKey] });
         } catch (error) {
             console.error("Failed to update player team:", error);
             // Revert on error
-            queryClient.setQueryData(["teams"], previousTeams);
+            queryClient.setQueryData([queryKey], previousTeams);
         }
     };
 
     const handleSetTeamVisibile = async (teamId) => {
         try {
             const response = await deleteHiddenTeam(teamId);
-            queryClient.invalidateQueries({ queryKey: ["hiddenTeams"] });
+            queryClient.invalidateQueries({ queryKey: ["teamsHidden"] });
         } catch (error) {
             console.log("Error deleting team", error);
         }
@@ -136,7 +146,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                         gridAutoColumns: "minmax(30px, 75px)",
                     }}
                 >
-                    {hiddenTeams.length !== 0 ? (
+                    {teamsHidden.length !== 0 ? (
                         <div className="space-y-4">
                             {" "}
                             {/* Added wrapper div with spacing */}
@@ -147,7 +157,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                             <div className="flex flex-wrap gap-2">
                                 {" "}
                                 {/* Button container */}
-                                {hiddenTeams.map((hiddenTeam) => (
+                                {teamsHidden.map((hiddenTeam) => (
                                     <button
                                         className="
                                         rounded-lg
@@ -176,6 +186,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                     <TeamBox
                         key={team.id}
                         team={team}
+                        queryKey={queryKey}
                         onDrop={handlePlayerDrop}
                     />
                 ))}

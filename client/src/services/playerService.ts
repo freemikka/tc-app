@@ -20,9 +20,21 @@ export const createPlayer = async (newPlayer: Player) => {
 };
 
 export const updatePlayerTeam = async (playerId: string, teamId: number) => {
-    const response = await apiClient.put(baseUrl, {
+    const response = await apiClient.put(`${baseUrl}/team`, {
         playerId: playerId,
         teamId: teamId,
+    });
+    return response.data;
+};
+
+export const updatePlayerTrainingGroup = async (
+    playerId: string,
+    trainingGroupId: number
+) => {
+    console.log("updatePlayerTrainingGroup");
+    const response = await apiClient.put(`${baseUrl}/training-group`, {
+        playerId: playerId,
+        trainingGroupId: trainingGroupId,
     });
     return response.data;
 };

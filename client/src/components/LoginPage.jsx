@@ -14,7 +14,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (isLoggedIn) {
-            navigate(0, { replace: true });
+            navigate("/", { replace: true });
         }
     }, [isLoggedIn, navigate]);
 
@@ -27,6 +27,7 @@ const LoginPage = () => {
 
         if (result.success) {
             console.log("Login successful");
+            navigate("/", { replace: true });
             setIsLoggedIn(true);
         } else {
             setError(result.message); // Show error message

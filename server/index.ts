@@ -11,6 +11,7 @@ import positionsRouter from "./routes/positions.routes.js";
 import teamsRouter from "./routes/teams.routes.js";
 import hiddenTeamsRouter from "./routes/hiddenTeams.routes.js";
 import trainingGroupsRouter from "./routes/trainingGroups.routes.js";
+import hiddenTrainingGroupsRouter from "./routes/hiddenTrainingGroups.routes.js";
 import morgan from "morgan";
 
 const app = express();
@@ -32,6 +33,7 @@ app.use("/api", positionsRouter);
 app.use("/api", teamsRouter);
 app.use("/api", hiddenTeamsRouter);
 app.use("/api", trainingGroupsRouter);
+app.use("/api", hiddenTrainingGroupsRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

@@ -4,17 +4,25 @@ import Navbar from "./Navbar";
 import { getTeamsWithPlayers } from "../services/teamService";
 import { getTrainingGroupsWithPlayers } from "../services/trainingGroupService";
 import { useQuery } from "@tanstack/react-query";
+import { useTrainingGroupsWithPlayers } from "../hooks/useTrainingGroupsWithPlayers";
+import { useTeamsWithPlayers } from "../hooks/useTeamsWithPlayers";
 
 const DragAndDropHome = ({ gender, isTraining }) => {
-    const { data: teams = [] } = useQuery({
-        queryKey: ["teams"],
-        queryFn: () => getTeamsWithPlayers(gender),
-    });
+    const {
+        data: teams,
+        isLoading: isTeamsLoading,
+        isError: isTeamsError,
+    } = useTeamsWithPlayers(gender);
 
-    const { data: trainingGroups = [] } = useQuery({
-        queryKey: ["trainingGroups"],
-        queryFn: () => getTrainingGroupsWithPlayers(gender),
-    });
+    const {
+        data: trainingGroups,
+        isLoading: isTrainingGroupsLoading,
+        isError: isTrainingGroupsError,
+    } = useTrainingGroupsWithPlayers(gender);
+
+    if (isTeamsLoading || isTrainingGroupsLoading) {
+        return <div>Loading</div>;
+    }
 
     return (
         <div>
@@ -23,7 +31,11 @@ const DragAndDropHome = ({ gender, isTraining }) => {
             <DragAndDropTeams
                 gender={gender}
                 data={isTraining ? trainingGroups : teams}
-                queryKey={isTraining ? "trainingGroups" : "teams"}
+                queryKey={
+                    isTraining
+                        ? "trainingGroupsWithPlayers"
+                        : "teamsWithPlayers"
+                }
             />
         </div>
     );

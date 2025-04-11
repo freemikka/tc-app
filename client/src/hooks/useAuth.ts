@@ -3,9 +3,14 @@ import supabase from "../utils/supabase"; // Import your supabase client
 
 // Fetch user session from Supabase
 const fetchUserSession = async () => {
-    const { data, error } = await supabase.auth.getSession();
-    console.log("data: ", data);
-    return data.session?.user || null; // Return the user object or null
+    try {
+        const { data, error } = await supabase.auth.getSession();
+        console.log("data: ", data);
+        return data.session?.user || null; // Return the user object or null
+    } catch (err) {
+        console.log("Error logging in", err);
+        return null;
+    }
 };
 
 export const useAuth = () => {
@@ -16,8 +21,3 @@ export const useAuth = () => {
         refetchOnWindowFocus: false,
     });
 };
-
-// useQuery({
-//     queryKey: ["players"],
-//     queryFn: getAllPlayers,
-// });

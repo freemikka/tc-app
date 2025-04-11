@@ -26,11 +26,6 @@ export const createTrainingGroup = async (newTrainingGroup: trainingGroup) => {
     return response.data;
 };
 
-// export const getTeamsWithPlayers = async (gender: string) => {
-//     const response = await apiClient.get(`${baseUrl}/with-players/${gender}`);
-//     return response.data;
-// };
-
 // const update = (id, newObject) => {
 //   const request = axios.put(`${baseUrl}/${id}`, newObject);
 //   return request.then((response) => response.data);

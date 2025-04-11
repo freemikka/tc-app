@@ -57,22 +57,50 @@ router.post(
     }
 );
 
-router.put(baseUrl, authMiddleware, associationMiddleware, async (req, res) => {
-    try {
-        const { playerId, teamId } = req.body;
-        const { data, error } = await supabase
-            .from("Players")
-            .update({ team_id: teamId })
-            .eq("id", playerId)
-            .select();
+router.put(
+    `${baseUrl}/teams`,
+    authMiddleware,
+    associationMiddleware,
+    async (req, res) => {
+        try {
+            const { playerId, teamId } = req.body;
+            const { data, error } = await supabase
+                .from("Players")
+                .update({ team_id: teamId })
+                .eq("id", playerId)
+                .select();
 
-        if (error) throw error;
+            if (error) throw error;
 
-        return res.status(200).json(data);
-    } catch (error) {
-        if (error instanceof Error)
-            return res.status(500).json({ error: error.message });
+            return res.status(200).json(data);
+        } catch (error) {
+            if (error instanceof Error)
+                return res.status(500).json({ error: error.message });
+        }
     }
-});
+);
+
+router.put(
+    `${baseUrl}/training-group`,
+    authMiddleware,
+    associationMiddleware,
+    async (req, res) => {
+        try {
+            const { playerId, trainingGroupId } = req.body;
+            const { data, error } = await supabase
+                .from("Players")
+                .update({ traininggroup_id: trainingGroupId })
+                .eq("id", playerId)
+                .select();
+
+            if (error) throw error;
+
+            return res.status(200).json(data);
+        } catch (error) {
+            if (error instanceof Error)
+                return res.status(500).json({ error: error.message });
+        }
+    }
+);
 
 export default router;
