@@ -19,6 +19,7 @@ export const createTeam = async (newTeam: Team) => {
 
 export const getTeamsWithPlayers = async (gender: string) => {
     const response = await apiClient.get(`${baseUrl}/with-players/${gender}`);
+    console.log(response);
     return response.data;
 };
 

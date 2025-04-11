@@ -10,54 +10,53 @@ import {
 } from "../services/hideTeamService";
 import supabase from "../utils/supabase";
 import TeamBox from "./TeamBox";
-import { getTrainingGroupsWithPlayers } from "../services/trainingGroupService";
-import Navbar from "./Navbar";
+import { useProfile } from "../hooks/useProfile";
 
-const DragAndDropTeams = ({ gender }) => {
+const DragAndDropTeams = ({ gender, data, queryKey }) => {
     const queryClient = useQueryClient();
-
-    const { data: teams = [] } = useQuery({
-        queryKey: ["teams"],
-        queryFn: () => getTeamsWithPlayers(gender),
-    });
+    const {
+        data: profile,
+        isLoading: isUserLoading,
+        isError: isUserError,
+    } = useProfile();
 
     const { data: hiddenTeams = [] } = useQuery({
         queryKey: ["hiddenTeams"],
         queryFn: () => getAllHiddenTeams(gender),
     });
 
-    const { data: trainingGroups = [] } = useQuery({
-        queryKey: ["trainingGroups"],
-        queryFn: () => getTrainingGroupsWithPlayers(gender),
-    });
-
-    // Show female and male teams for each page, also dont show hidden teams per gender
-    const visibleTeams = teams.filter(
+    //  dont show hidden teams
+    const visibleTeams = data.filter(
         (team) =>
             !hiddenTeams.some((hiddenTeam) => hiddenTeam.team_id === team.id)
     );
 
     React.useEffect(() => {
+        if (isUserLoading) return;
         queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
         const channel = supabase
-            .channel("players-changes")
+            .channel(`players-changes-${profile.association_id}`)
             .on(
                 "postgres_changes",
                 {
                     event: "*",
                     schema: "public",
                     table: "Players",
+                    filter: `association_id=eq.${profile.association_id}`,
                 },
-                () => {
+                (payload) => {
+                    console.log("payload", payload);
                     queryClient.invalidateQueries({ queryKey: ["teams"] });
                 }
             )
-            .subscribe();
+            .subscribe((status) => {
+                console.log(status);
+            });
 
         return () => {
             channel.unsubscribe();
         };
-    }, [queryClient]);
+    }, [profile]);
 
     const handlePlayerDrop = async (player, newTeamId) => {
         if (!newTeamId) return;
@@ -104,6 +103,10 @@ const DragAndDropTeams = ({ gender }) => {
             console.log("Error deleting team", error);
         }
     };
+
+    if (isUserLoading) {
+        return <div>Wait</div>;
+    }
 
     return (
         <DndProvider backend={HTML5Backend}>

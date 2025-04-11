@@ -17,6 +17,29 @@ import Navbar from "./components/Navbar";
 function App() {
     const { data: user, isUserLoading, isUserError } = useAuth();
 
+    const genderRoutes = [
+        {
+            path: "/dames",
+            gender: "Female",
+            type: "standard",
+        },
+        {
+            path: "/traininggroep-dames",
+            gender: "Female",
+            type: "training",
+        },
+        {
+            path: "/heren",
+            gender: "Male",
+            type: "standard",
+        },
+        {
+            path: "/traininggroep-heren",
+            gender: "Male",
+            type: "training",
+        },
+    ];
+
     return (
         <Router>
             <Routes>
@@ -30,25 +53,18 @@ function App() {
                     element={user ? <Navigate to="/" /> : <SignUpPage />}
                 />
                 <Route path="/" element={user ? <HomePage /> : <LoginPage />} />
-                <Route
-                    path="/dames"
-                    element={<DragAndDropHome gender="Female" />}
-                />
-                <Route
-                    path="/traininggroep-dames"
-                    element={<DragAndDropHome gender="Female" />}
-                />
-                <Route
-                    path="/heren"
-                    element={<DragAndDropHome gender="Male" />}
-                />
-
-                <Route
-                    path="/traininggroep-heren"
-                    element={<DragAndDropHome gender="Male" />}
-                />
-
-                {/* <ProtectedRoute path="/dashboard" component={Dashboard} user={user} /> */}
+                {genderRoutes.map((route) => (
+                    <Route
+                        key={route.path}
+                        path={route.path}
+                        element={
+                            <DragAndDropHome
+                                gender={route.gender}
+                                isTraining={route.type === "training"}
+                            />
+                        }
+                    />
+                ))}
             </Routes>
         </Router>
     );
