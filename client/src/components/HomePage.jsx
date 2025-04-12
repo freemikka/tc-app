@@ -5,6 +5,7 @@ import { getAllTeams } from "../services/teamService";
 import { getProfile } from "../services/profileService";
 import PickAssociation from "../components/PickAssociation";
 import Navbar from "./Navbar";
+import { Navigate } from "react-router-dom";
 
 import AssociationView from "./AssociationView";
 import AddPlayerForm from "./AddPlayerForm";
@@ -19,7 +20,7 @@ const HomePage = () => {
                 const data = await getProfile();
                 setAssociation(data);
             } catch (err) {
-                // setError(err.message || "Failed to load profile");
+                return <Navigate to="/login" replace />;
             } finally {
                 // setLoading(false);
             }

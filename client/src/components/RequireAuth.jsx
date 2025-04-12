@@ -8,7 +8,7 @@ const RequireAuth = ({ children }) => {
         return <div>Loading</div>;
     }
 
-    if (!user) {
+    if (user === null || user.session === null) {
         return <Navigate to="/login" replace />;
     }
 
