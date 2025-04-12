@@ -1,18 +1,21 @@
 import React from "react";
 import { useAuth } from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-const RequireAuth = ({ children }) => {
-    const { data: user, isLoading, isUserError } = useAuth();
+const RequireAuth = () => {
+    const { data: session, isLoading, isError } = useAuth();
+    const location = useLocation();
+
     if (isLoading) {
-        return <div>Loading</div>;
+        return <div>Loading...</div>;
     }
 
-    if (user === null || user.session === null) {
-        return <Navigate to="/login" replace />;
+    if (isError || !session) {
+        // Save the location they were trying to go to
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    return children;
+    return <Outlet />;
 };
 
 export default RequireAuth;

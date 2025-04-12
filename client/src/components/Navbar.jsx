@@ -18,6 +18,7 @@ function Navbar() {
         const error = await signOutUser();
         if (!error) {
             queryClient.invalidateQueries({ queryKey: ["authSession"] });
+            console.log("here?");
             navigate("/login");
         } else {
             console.error("Sign out failed:", error);
