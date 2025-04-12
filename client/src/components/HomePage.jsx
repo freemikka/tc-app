@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-// import { signOutUser } from "../services/userService";
-import { getAllPlayers } from "../services/playerService";
-import { getAllTeams } from "../services/teamService";
 import { getProfile } from "../services/profileService";
 import PickAssociation from "../components/PickAssociation";
-import Navbar from "./Navbar";
 import { Navigate } from "react-router-dom";
 
 import AssociationView from "./AssociationView";
-import AddPlayerForm from "./AddPlayerForm";
-import AddTeamForm from "./AddTeamForm";
 
 const HomePage = () => {
-    //
     const [association, setAssociation] = useState(null);
     useEffect(() => {
         const fetchProfile = async () => {
@@ -20,6 +13,8 @@ const HomePage = () => {
                 const data = await getProfile();
                 setAssociation(data);
             } catch (err) {
+                console.log("here!!!");
+                console.log(err);
                 return <Navigate to="/login" replace />;
             } finally {
                 // setLoading(false);
