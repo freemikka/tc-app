@@ -18,10 +18,10 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
             isOver: !!monitor.isOver(),
         }),
     }));
-
-    const sortedPlayers = [...team.players].sort(
-        (a, b) => a.position_id - b.position_id
-    );
+    // Sort players groups alphabetically and by id
+    const sortedPlayers = [...team.players].sort((a, b) => {
+        return a.first_name.localeCompare(b.first_name);
+    });
 
     const teamBoxLength = Math.max(sortedPlayers.length * 9.5, 100);
 

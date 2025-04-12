@@ -45,6 +45,12 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
               )
     );
 
+    const sortedvisibleTeams = visibleTeams.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+    });
+
+    console.log(visibleTeams);
+
     React.useEffect(() => {
         if (isUserLoading) return;
         // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
@@ -141,7 +147,6 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
             <div
                 style={{
                     display: "grid",
-
                     gridTemplateColumns:
                         "100px repeat(auto-fit, minmax(300px, 300px))",
                     gap: "16px",
@@ -201,7 +206,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                         <div>No teams hidden</div>
                     )}
                 </div>
-                {visibleTeams.map((team) => (
+                {sortedvisibleTeams.map((team) => (
                     <TeamBox
                         key={team.id}
                         team={team}

@@ -35,6 +35,10 @@ router.post(
             const position_id = req.position_id;
 
             const { firstName, lastName, email } = req.body;
+            console.log(firstName);
+            console.log(position_id);
+            console.log(association_id);
+            console.log(team_id);
             const { data, error } = await supabase
                 .from("Players")
                 .insert({
@@ -45,7 +49,8 @@ router.post(
                     association_id: association_id,
                     position_id: position_id,
                 })
-                .select();
+                .select()
+                .single();
 
             if (error) throw error;
 
@@ -58,7 +63,7 @@ router.post(
 );
 
 router.put(
-    `${baseUrl}/teams`,
+    `${baseUrl}/team`,
     authMiddleware,
     associationMiddleware,
     async (req, res) => {

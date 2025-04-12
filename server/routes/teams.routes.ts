@@ -118,6 +118,18 @@ router.post(
         try {
             const association_id = req.association_id;
             const { name, gender } = req.body;
+            const { data: currentTeams } = await supabase
+                .from("Teams")
+                .select("*")
+                .eq("gender", gender)
+                .eq("name", name);
+
+            if (currentTeams && currentTeams.length > 0) {
+                throw new Error(
+                    "A team with this name and gender already exists."
+                );
+            }
+
             const { data: teams, error } = await supabase
                 .from("Teams")
                 .insert({

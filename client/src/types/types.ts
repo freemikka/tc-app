@@ -14,13 +14,11 @@ export interface TeamWithPlayers {
 }
 
 export default interface Team {
-    id: number;
     name: string;
     gender: string;
 }
 
 export default interface trainingGroup {
-    id: number;
     name: string;
     gender: string;
 }

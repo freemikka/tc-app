@@ -1,69 +1,78 @@
 import React, { useState } from "react";
-import { createTeam } from "../services/teamService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCreateTeam } from "../mutations/createTeam";
+import { useTeams } from "../hooks/useTeams";
 
 const AddTeamForm = () => {
-    const queryClient = useQueryClient();
+    const { mutate: createTeam } = useCreateTeam();
 
-    const mutation = useMutation({
-        mutationFn: createTeam,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["teams"] });
-        },
-        onError: (err) => {
-            console.error("Failed creating player:", err.message);
-        },
+    const [formData, setFormData] = useState({
+        name: "",
+        gender: "Male",
     });
 
-    // HANDLE OPTIMISTIC ADDING FRONTEND ELSE PROBLEMS SEE TRAININGROUPS
-
-    const handleAddMaleTeam = async (event) => {
-        const teams = queryClient.getQueryData(["teams"]);
-        const maleTeams = teams.filter((team) => team.gender === "Male");
-        event.preventDefault();
-        const newTeam = {
-            name: `HS ${maleTeams.length + 1}`,
-            gender: "Male",
-        };
-
-        mutation.mutate(newTeam);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
-    const handleAddFemaleTeam = async (event) => {
-        const teams = queryClient.getQueryData(["teams"]);
-        const femaleTeams = teams.filter((team) => team.gender === "Female");
-        event.preventDefault();
-        const newTeam = {
-            name: `DS ${femaleTeams.length + 1}`,
-            gender: "Female",
-        };
-        mutation.mutate(newTeam);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        createTeam({ name: formData.name, gender: formData.gender });
     };
 
     return (
-        <div>
-            <div className="mt-4 p-4 border rounded">
-                <h2 className="text-lg font-semibold mb-2 ">Add Team</h2>
-
-                <button
-                    className="mx-5 bg-sky-500 hover:bg-sky-700 hover:cursor-pointer text-white font-medium py-2 px-4 rounded transition-colors"
-                    type="submit"
-                    value="Submit"
-                    onClick={handleAddMaleTeam}
+        <form
+            onSubmit={handleSubmit}
+            className="p-4 max-w-md mx-auto bg-white rounded shadow"
+        >
+            <div className="mb-4">
+                <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700"
                 >
-                    Add Male Team
-                </button>
-
-                <button
-                    className="mx-5 bg-sky-500 hover:bg-sky-700 hover:cursor-pointer text-white font-medium py-2 px-4 rounded transition-colors"
-                    type="submit"
-                    value="Submit"
-                    onClick={handleAddFemaleTeam}
-                >
-                    Add Female Team
-                </button>
+                    Name
+                </label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border border-gray-300 rounded p-2"
+                    required
+                />
             </div>
-        </div>
+
+            <div className="mb-4">
+                <label
+                    htmlFor="gender"
+                    className="block text-sm font-medium text-gray-700"
+                >
+                    Gender
+                </label>
+                <select
+                    name="gender"
+                    id="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border border-gray-300 rounded p-2"
+                >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <button
+                type="submit"
+                className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+            >
+                Submit
+            </button>
+        </form>
     );
 };
 
