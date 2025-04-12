@@ -6,7 +6,6 @@ const fetchUserSession = async () => {
     try {
         const { data, error } = await supabase.auth.getSession();
         if (error) throw error;
-        console.log(data);
         return data.session; // Return the entire session object
     } catch (err) {
         console.error("Error fetching session:", err);

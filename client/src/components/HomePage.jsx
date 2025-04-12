@@ -13,8 +13,6 @@ const HomePage = () => {
                 const data = await getProfile();
                 setAssociation(data);
             } catch (err) {
-                console.log("here!!!");
-                console.log(err);
                 return <Navigate to="/login" replace />;
             } finally {
                 // setLoading(false);

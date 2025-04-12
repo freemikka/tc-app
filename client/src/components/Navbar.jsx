@@ -4,7 +4,6 @@ import AddTeamForm from "./AddTeamForm";
 import AddTrainingGroupForm from "./AddTrainingGroupForm";
 import { signOutUser } from "../services/authService";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
 
 function Navbar() {
@@ -17,8 +16,8 @@ function Navbar() {
     const handleSignOut = async () => {
         const error = await signOutUser();
         if (!error) {
+            console.log("handleSignOut");
             queryClient.invalidateQueries({ queryKey: ["authSession"] });
-            console.log("here?");
             navigate("/login");
         } else {
             console.error("Sign out failed:", error);
@@ -28,15 +27,6 @@ function Navbar() {
     const createExcelPrintout = () => {
         console.log("yo");
     };
-
-    const {
-        data: user = {},
-        isUserLoading,
-        userErro,
-    } = useQuery({
-        queryKey: ["authSession"],
-        queryFn: useAuth,
-    });
 
     return (
         <nav className="bg-gray-800 shadow-lg">

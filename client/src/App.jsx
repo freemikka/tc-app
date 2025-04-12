@@ -42,21 +42,23 @@ function App() {
                 <Route path="/signup" element={<SignUpPage />} />
 
                 {/* Protected routes */}
-                {/* <Route element={<RequireAuth />}> */}
-                <Route path="/" element={<HomePage />} />
-                {genderRoutes.map((route) => (
-                    <Route
-                        key={route.path}
-                        path={route.path}
-                        element={
-                            <DragAndDropHome
-                                gender={route.gender}
-                                isTraining={route.type === "training"}
-                            />
-                        }
-                    />
-                ))}
-                {/* </Route> */}
+                <Route element={<RequireAuth />}>
+                    {" "}
+                    TODO
+                    <Route path="/" element={<HomePage />} />
+                    {genderRoutes.map((route) => (
+                        <Route
+                            key={route.path}
+                            path={route.path}
+                            element={
+                                <DragAndDropHome
+                                    gender={route.gender}
+                                    isTraining={route.type === "training"}
+                                />
+                            }
+                        />
+                    ))}
+                </Route>
             </Routes>
         </Router>
     );

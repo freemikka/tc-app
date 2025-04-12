@@ -13,6 +13,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/"; // Get redirect location or default to home
+    console.log("LoginPage", from);
     const queryClient = useQueryClient();
 
     const handleLogin = async (event) => {
@@ -41,6 +42,7 @@ const LoginPage = () => {
                 // You'll need to import and use queryClient here
                 queryClient.invalidateQueries(["authSession"]);
                 console.log("here? loginpage");
+                console.log("invalidateQueries");
 
                 // Navigate to the original location
                 navigate(from, { replace: true });
