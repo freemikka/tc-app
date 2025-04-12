@@ -4,9 +4,11 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-const DotMenu = ({ handleMenuClick }) => {
+const DotMenu = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const { menuItems } = props;
+    console.log("props", props);
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -34,27 +36,19 @@ const DotMenu = ({ handleMenuClick }) => {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem
-                    onClick={() => {
-                        handleMenuClick(0);
-                    }}
-                >
-                    Delete team
-                </MenuItem>
-                <MenuItem
-                    onClick={() => {
-                        handleMenuClick(1);
-                    }}
-                >
-                    Hide team
-                </MenuItem>
-                <MenuItem
-                    onClick={() => {
-                        handleMenuClick(2);
-                    }}
-                >
-                    Option 3
-                </MenuItem>
+                {menuItems.map((menuItem) => {
+                    return (
+                        <MenuItem
+                            key={menuItem.name}
+                            id={menuItem.name}
+                            onClick={() =>
+                                menuItem.handleMenuClick(menuItem.option)
+                            }
+                        >
+                            {menuItem.name}
+                        </MenuItem>
+                    );
+                })}
             </Menu>
         </div>
     );

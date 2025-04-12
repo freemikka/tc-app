@@ -62,7 +62,31 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
             // Collapse the team so it no longer shows up
             handleHideTeam(team.id);
         }
+
+        if (option === 2) {
+            console.log("not implement");
+        }
     };
+
+    const menuItems = [
+        {
+            name: "Delete team",
+            handleMenuClick: handleMenuClick,
+            option: 0,
+        },
+        {
+            name: "Hide team",
+            handleMenuClick: handleMenuClick,
+            option: 1,
+        },
+        {
+            name: "Update team",
+            handleMenuClick: handleMenuClick,
+            option: 2,
+        },
+    ];
+
+    console.log("menuItems", menuItems);
 
     return (
         <div
@@ -93,7 +117,7 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
                     {team.name}
                 </h3>
                 {/* Menu button on the right */}
-                <DotMenu handleMenuClick={handleMenuClick} />
+                <DotMenu menuItems={menuItems} />
             </div>
 
             <div

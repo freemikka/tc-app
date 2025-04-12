@@ -1,35 +1,7 @@
 import React from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
-
-const PlayerItem = ({ player, onDrop }) => {
-    const [{ isDragging }, drag] = useDrag(() => ({
-        type: "PLAYER",
-        item: player,
-        end: (item, monitor) => {
-            if (!monitor.didDrop()) {
-                // If not dropped on a valid target, notify parent to cancel
-                onDrop(item, null);
-            }
-        },
-        collect: (monitor) => ({
-            isDragging: !!monitor.isDragging(),
-        }),
-    }));
-
-    const playerStyle = getPlayerStyle(player.position_id);
-
-    return (
-        <div
-            ref={drag}
-            style={{
-                ...playerStyle,
-                opacity: isDragging ? 0.5 : 1,
-            }}
-        >
-            {player.first_name} {player.last_name}
-        </div>
-    );
-};
+import DotMenu from "./DotMenu";
+import { useDeletePlayer } from "../mutations/deletePlayer";
 
 // Player ID based styling
 const getPlayerStyle = (playerId) => {
@@ -62,6 +34,71 @@ const getPlayerStyle = (playerId) => {
             borderLeft: colors[playerId],
         };
     }
+};
+
+const PlayerItem = ({ player, onDrop }) => {
+    const { mutate: mutateDeletePlayer } = useDeletePlayer();
+
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: "PLAYER",
+        item: player,
+        end: (item, monitor) => {
+            if (!monitor.didDrop()) {
+                // If not dropped on a valid target, notify parent to cancel
+                onDrop(item, null);
+            }
+        },
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    }));
+
+    const handleMenuClick = (option) => {
+        if (option === 0) {
+            //delete player
+            mutateDeletePlayer(player.id);
+        }
+
+        if (option === 1) {
+            // update player
+        }
+    };
+
+    const playerStyle = getPlayerStyle(player.position_id);
+
+    const menuItems = [
+        {
+            name: "Delete player",
+            handleMenuClick: handleMenuClick,
+            option: 0,
+        },
+        {
+            name: "Update player",
+            handleMenuClick: handleMenuClick,
+            option: 1,
+        },
+    ];
+
+    return (
+        <div
+            ref={drag}
+            style={{
+                ...playerStyle,
+                opacity: isDragging ? 0.5 : 1,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: "2px",
+                justifyContent: "space-between",
+                paddingLeft: "8px",
+                paddingTop: "0px",
+                paddingBottom: "0px",
+            }}
+        >
+            {player.first_name} {player.last_name}
+            <DotMenu menuItems={menuItems} />
+        </div>
+    );
 };
 
 export default PlayerItem;

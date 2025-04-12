@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 const RequireAuth = ({ children }) => {
     const { data: user, isLoading, isUserError } = useAuth();
-    if (isLoading || !user) {
+    if (isLoading) {
         return <div>Loading</div>;
     }
 

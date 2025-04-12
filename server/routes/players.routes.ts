@@ -108,4 +108,28 @@ router.put(
     }
 );
 
+router.delete(
+    `${baseUrl}/:id`, // Base URL with `:id` parameter
+    authMiddleware,
+    associationMiddleware,
+    async (req, res) => {
+        const playerId = req.params.id;
+
+        try {
+            const { error } = await supabase.rpc("delete_player", {
+                player_id: playerId,
+            });
+
+            if (error) throw error;
+
+            res.status(200).json({
+                message: "Player deleted successfully",
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: "Failed to delete player" });
+        }
+    }
+);
+
 export default router;

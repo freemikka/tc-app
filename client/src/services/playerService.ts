@@ -44,7 +44,7 @@ export const updatePlayerTrainingGroup = async (
 //   return request.then((response) => response.data);
 // };
 
-// const deletePerson = (id) => {
-//   const request = axios.delete(`${baseUrl}/${id}`);
-//   return request.then((response) => response.data);
-// };
+export const deletePlayer = async (id: string) => {
+    const response = await apiClient.delete(`${baseUrl}/${id}`);
+    return response.data;
+};
