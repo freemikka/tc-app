@@ -1,22 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/userService";
-import { useEffect } from "react";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const navigate = useNavigate(); // For redirection
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            navigate("/", { replace: true });
-        }
-    }, [isLoggedIn, navigate]);
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -27,8 +19,7 @@ const LoginPage = () => {
 
         if (result.success) {
             console.log("Login successful");
-            navigate("/", { replace: true });
-            setIsLoggedIn(true);
+            navigate("/"); // Directly navigate after successful login
         } else {
             setError(result.message); // Show error message
         }

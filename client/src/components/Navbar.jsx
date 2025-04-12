@@ -24,6 +24,10 @@ function Navbar() {
         }
     };
 
+    const createExcelPrintout = () => {
+        console.log("yo");
+    };
+
     const {
         data: user = {},
         isUserLoading,
@@ -53,10 +57,10 @@ function Navbar() {
                                 About
                             </button>
                             <button
-                                onClick={() => openModal("services")}
+                                onClick={createExcelPrintout}
                                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                             >
-                                Services
+                                Create Excel Printout
                             </button>
                             <button
                                 onClick={() => openModal("AddTeam")}
@@ -150,12 +154,10 @@ function Navbar() {
                                         About
                                     </button>
                                     <button
-                                        onClick={() => {
-                                            openModal("services");
-                                        }}
+                                        onClick={createExcelPrintout}
                                         className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
                                     >
-                                        Services
+                                        Create Excel Printout
                                     </button>
                                     <button
                                         onClick={() => {
@@ -207,8 +209,6 @@ function Navbar() {
                                         <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
                                             {activeModal === "about" &&
                                                 "About Us"}
-                                            {activeModal === "services" &&
-                                                "Our Services"}
                                             {activeModal === "contact" &&
                                                 "Contact Us"}
                                             {activeModal === "addPlayer" &&
@@ -223,13 +223,6 @@ function Navbar() {
                                                     Here's some information
                                                     about our company.
                                                 </p>
-                                            )}
-                                            {activeModal === "services" && (
-                                                <ul className="text-gray-500 list-disc pl-5">
-                                                    <li>Service 1</li>
-                                                    <li>Service 2</li>
-                                                    <li>Service 3</li>
-                                                </ul>
                                             )}
                                             {activeModal === "AddTeam" && (
                                                 <AddTeamForm />

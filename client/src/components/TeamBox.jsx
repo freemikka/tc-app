@@ -48,7 +48,6 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
                         queryKey: [queryKey],
                     });
                 } else {
-                    console.log("here");
                     deleteTrainingGroup(team.id); // Pass teamId to your service
                 }
 
@@ -85,8 +84,6 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
             option: 2,
         },
     ];
-
-    console.log("menuItems", menuItems);
 
     return (
         <div

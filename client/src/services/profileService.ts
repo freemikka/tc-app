@@ -19,7 +19,6 @@ export const createProfile = async (associationName: string) => {
         const response = await apiClient.post(baseUrl, {
             name: associationName, // Send name instead of ID
         });
-        console.log("createProfile", response);
         return { success: true, data: response.data };
     } catch (error) {
         return {

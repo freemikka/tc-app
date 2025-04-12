@@ -44,7 +44,6 @@ const AssociationPicker = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(associationName);
         const result = await createProfile(associationName);
         if (result.success) {
             alert(`Joined association successfully!`);

@@ -35,10 +35,6 @@ router.post(
             const position_id = req.position_id;
 
             const { firstName, lastName, email } = req.body;
-            console.log(firstName);
-            console.log(position_id);
-            console.log(association_id);
-            console.log(team_id);
             const { data, error } = await supabase
                 .from("Players")
                 .insert({
@@ -95,6 +91,30 @@ router.put(
             const { data, error } = await supabase
                 .from("Players")
                 .update({ traininggroup_id: trainingGroupId })
+                .eq("id", playerId)
+                .select();
+
+            if (error) throw error;
+
+            return res.status(200).json(data);
+        } catch (error) {
+            if (error instanceof Error)
+                return res.status(500).json({ error: error.message });
+        }
+    }
+);
+
+router.put(
+    `${baseUrl}/:id/position`,
+    authMiddleware,
+    associationMiddleware,
+    async (req, res) => {
+        try {
+            const { newPositionId } = req.body;
+            const playerId = req.params.id;
+            const { data, error } = await supabase
+                .from("Players")
+                .update({ position_id: newPositionId })
                 .eq("id", playerId)
                 .select();
 

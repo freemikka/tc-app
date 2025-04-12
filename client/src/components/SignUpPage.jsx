@@ -20,8 +20,6 @@ const SignUpPage = () => {
             });
 
             if (error) throw error;
-
-            console.log("User signed up:", user);
             // You can redirect to a login page or home page here
             navigate("/");
         } catch (error) {

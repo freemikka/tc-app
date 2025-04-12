@@ -49,8 +49,6 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
         return a.name.localeCompare(b.name);
     });
 
-    console.log(visibleTeams);
-
     React.useEffect(() => {
         if (isUserLoading) return;
         // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });

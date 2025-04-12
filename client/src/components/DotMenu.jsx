@@ -4,11 +4,9 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-const DotMenu = (props) => {
+const DotMenu = ({ menuItems }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const { menuItems } = props;
-    console.log("props", props);
 
     const handleClick = (event) => {
         event.preventDefault();

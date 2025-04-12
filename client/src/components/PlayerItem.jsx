@@ -2,6 +2,7 @@ import React from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import DotMenu from "./DotMenu";
 import { useDeletePlayer } from "../mutations/deletePlayer";
+import { useUpdatePlayerPosition } from "../mutations/updatePlayerPosition";
 
 // Player ID based styling
 const getPlayerStyle = (playerId) => {
@@ -38,6 +39,7 @@ const getPlayerStyle = (playerId) => {
 
 const PlayerItem = ({ player, onDrop }) => {
     const { mutate: mutateDeletePlayer } = useDeletePlayer();
+    const { mutate: mutatePlayerPosition } = useUpdatePlayerPosition();
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "PLAYER",
@@ -57,10 +59,11 @@ const PlayerItem = ({ player, onDrop }) => {
         if (option === 0) {
             //delete player
             mutateDeletePlayer(player.id);
-        }
-
-        if (option === 1) {
-            // update player
+        } else {
+            mutatePlayerPosition({
+                playerId: player.id,
+                newPositionId: option + 2, // This is weird but due to how Supabase has stored the ID for each position. Should prob think of something better
+            });
         }
     };
 
@@ -73,9 +76,29 @@ const PlayerItem = ({ player, onDrop }) => {
             option: 0,
         },
         {
-            name: "Update player",
+            name: "Make setter",
             handleMenuClick: handleMenuClick,
             option: 1,
+        },
+        {
+            name: "Make middle",
+            handleMenuClick: handleMenuClick,
+            option: 2,
+        },
+        {
+            name: "Make outside",
+            handleMenuClick: handleMenuClick,
+            option: 3,
+        },
+        {
+            name: "Make diagonal",
+            handleMenuClick: handleMenuClick,
+            option: 4,
+        },
+        {
+            name: "Make libero",
+            handleMenuClick: handleMenuClick,
+            option: 5,
         },
     ];
 

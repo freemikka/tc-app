@@ -44,7 +44,6 @@ const AddPlayerForm = () => {
             });
         },
         onError: (error) => {
-            console.log(formData);
             console.error("Failed creating player:", error.message);
         },
     });
