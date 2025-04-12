@@ -18,11 +18,12 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
             isOver: !!monitor.isOver(),
         }),
     }));
+    const sortFn = (a, b) => {
+        if (a.position !== b.position) return a.position - b.position;
+        else return a.firstName.localeCompare(b.firstName);
+    };
     // Sort players groups alphabetically and by id
-    const sortedPlayers = [...team.players].sort((a, b) => {
-        return a.first_name.localeCompare(b.first_name);
-    });
-
+    const sortedPlayers = [...team.players].sort(sortFn);
     const teamBoxLength = Math.max(sortedPlayers.length * 9.5, 100);
 
     const { mutate: createHidden } = useCreateHiddenTeam();

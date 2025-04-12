@@ -2,7 +2,7 @@ export interface Player {
     id: string;
     firstName: string;
     lastName: string;
-    email: string;
+    email?: string;
     position: string;
     team: string;
 }
@@ -10,15 +10,17 @@ export interface Player {
 export interface TeamWithPlayers {
     id: string;
     name: string;
+    gender: string;
     players: Player[];
 }
 
-export default interface Team {
+export interface Team {
+    id: number;
     name: string;
     gender: string;
 }
 
-export default interface trainingGroup {
+export interface trainingGroup {
     name: string;
     gender: string;
 }

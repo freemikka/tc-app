@@ -27,7 +27,8 @@
         "react-router": "^7.4.0",
         "react-router-dom": "^7.4.0",
         "supabase": "^2.20.3",
-        "xlsx": "^0.18.5"
+        "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+        "xlsx-js-style": "^1.2.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.21.0",

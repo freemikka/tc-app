@@ -44,7 +44,6 @@ function App() {
                 {/* Protected routes */}
                 <Route element={<RequireAuth />}>
                     {" "}
-                    TODO
                     <Route path="/" element={<HomePage />} />
                     {genderRoutes.map((route) => (
                         <Route

@@ -5,6 +5,7 @@ import AddTrainingGroupForm from "./AddTrainingGroupForm";
 import { signOutUser } from "../services/authService";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import ExcelDownload from "../features/excelDownload";
 
 function Navbar() {
     const [activeModal, setActiveModal] = useState(null);
@@ -25,7 +26,7 @@ function Navbar() {
     };
 
     const createExcelPrintout = () => {
-        console.log("yo");
+        ExcelDownload();
     };
 
     return (

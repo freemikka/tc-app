@@ -67,7 +67,7 @@ const PlayerItem = ({ player, onDrop }) => {
         }
     };
 
-    const playerStyle = getPlayerStyle(player.position_id);
+    const playerStyle = getPlayerStyle(player.position);
 
     const menuItems = [
         {
@@ -118,7 +118,7 @@ const PlayerItem = ({ player, onDrop }) => {
                 paddingBottom: "0px",
             }}
         >
-            {player.first_name} {player.last_name}
+            {player.firstName} {player.lastName}
             <DotMenu menuItems={menuItems} />
         </div>
     );

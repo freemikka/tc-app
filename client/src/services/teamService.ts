@@ -1,4 +1,6 @@
-import Team from "../types/types";
+import { Team } from "../types/types";
+import { TeamWithPlayers } from "../types/types";
+import { mapTeamWithPlayers } from "../utils/mapper";
 import apiClient from "../api/client";
 const baseUrl = "/teams";
 
@@ -17,9 +19,11 @@ export const createTeam = async (newTeam: Team) => {
     return response.data;
 };
 
-export const getTeamsWithPlayers = async (gender: string) => {
+export const getTeamsWithPlayers = async (
+    gender: string
+): Promise<TeamWithPlayers[]> => {
     const response = await apiClient.get(`${baseUrl}/with-players/${gender}`);
-    return response.data;
+    return response.data.map(mapTeamWithPlayers);
 };
 
 // const update = (id, newObject) => {
