@@ -1,4 +1,4 @@
-import Player from "../types/types";
+import { Player } from "../types/types";
 import apiClient from "../api/client";
 const baseUrl = "/players";
 
@@ -13,6 +13,7 @@ export const getAllPlayers = async () => {
 };
 
 export const createPlayer = async (newPlayer: Player) => {
+    console.log(newPlayer);
     const response = await apiClient.post<Player>(baseUrl, newPlayer);
     return response.data;
 };

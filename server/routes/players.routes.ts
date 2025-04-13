@@ -5,6 +5,7 @@ import { authMiddleware } from "../middleware/auth.js";
 import { teamMiddleware } from "../middleware/teamMiddleware.js";
 import { associationMiddleware } from "../middleware/associationMiddleware.js";
 import { positionMiddleware } from "../middleware/positionMiddleware.js";
+import { trainingGroupMiddleware } from "../middleware/trainingGroupMiddleware.js";
 
 dotenv.config();
 
@@ -27,12 +28,14 @@ router.post(
     authMiddleware,
     associationMiddleware,
     teamMiddleware,
+    trainingGroupMiddleware,
     positionMiddleware,
     async (req, res) => {
         try {
             const team_id = req.team_id;
             const association_id = req.association_id;
             const position_id = req.position_id;
+            const traininggroup_id = req.traininggroup_id;
 
             const { firstName, lastName, email } = req.body;
             const { data, error } = await supabase
@@ -44,6 +47,7 @@ router.post(
                     team_id: team_id,
                     association_id: association_id,
                     position_id: position_id,
+                    traininggroup_id: traininggroup_id,
                 })
                 .select()
                 .single();

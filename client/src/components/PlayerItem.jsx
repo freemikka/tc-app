@@ -8,11 +8,11 @@ import { useUpdatePlayerPosition } from "../mutations/updatePlayerPosition";
 const getPlayerStyle = (playerId) => {
     // Example: Different colors based on player ID
     const colors = {
-        3: "8px solid rgb(255, 0, 0)", // Setter
-        4: "8px solid rgb(2, 201, 35)", // Middle
-        5: "8px solid rgb(255, 238, 0)", // Outside
-        6: "8px solid rgb(0, 8, 240)", // Diagonal
-        7: "8px solid rgb(205, 127, 50)", // Libero
+        3: "8px solid #ff0000", // Setter
+        4: "8px solid #02c923", // Middle
+        5: "8px solid #a69b06", // Outside
+        6: "8px solid #0008f0", // Diagonal
+        7: "8px solid #dc179a", // Libero
         // Add more specific player styles as needed
     };
 

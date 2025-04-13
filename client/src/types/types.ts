@@ -3,11 +3,19 @@ export interface Player {
     firstName: string;
     lastName: string;
     email?: string;
-    position: string;
+    position: number;
     team: string;
+    trainingGroup: string;
 }
 
 export interface TeamWithPlayers {
+    id: string;
+    name: string;
+    gender: string;
+    players: Player[];
+}
+
+export interface TrainingGroupWithPlayers {
     id: string;
     name: string;
     gender: string;

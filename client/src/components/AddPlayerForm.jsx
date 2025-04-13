@@ -3,6 +3,7 @@ import { createPlayer } from "../services/playerService";
 import { getAllPositions } from "../services/positionService";
 import { getAllTeams } from "../services/teamService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getAllTrainingGroups } from "../services/trainingGroupService";
 
 const AddPlayerForm = () => {
     const [formData, setFormData] = useState({
@@ -11,9 +12,11 @@ const AddPlayerForm = () => {
         email: "",
         position: "",
         team: "",
+        trainingGroup: "",
     });
 
     const [teams, setTeams] = useState([]);
+    const [trainingGroups, setTrainingGroups] = useState([]);
     const [positions, setPositions] = useState([]);
 
     // Fetch teams and positions when component mounts
@@ -24,6 +27,9 @@ const AddPlayerForm = () => {
 
             const teamsResponse = await getAllTeams();
             setTeams(teamsResponse);
+
+            const trainingGroupsResponse = await getAllTrainingGroups();
+            setTrainingGroups(trainingGroupsResponse);
         };
 
         fetchData();
@@ -41,6 +47,7 @@ const AddPlayerForm = () => {
                 email: "",
                 position: "",
                 team: "",
+                trainingGroup: "",
             });
         },
         onError: (error) => {
@@ -135,6 +142,25 @@ const AddPlayerForm = () => {
                             {teams.map((team) => (
                                 <option key={team.id} value={team.name}>
                                     {team.name}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                    <label className="flex flex-col">
+                        Training group:
+                        <select
+                            name="trainingGroup"
+                            value={formData.trainingGroup}
+                            onChange={handleChange}
+                            className="border rounded p-2"
+                        >
+                            <option value="">Select Traininggroup</option>
+                            {trainingGroups.map((trainingGroup) => (
+                                <option
+                                    key={trainingGroup.id}
+                                    value={trainingGroup.name}
+                                >
+                                    {trainingGroup.name}
                                 </option>
                             ))}
                         </select>

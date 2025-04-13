@@ -6,8 +6,14 @@ import { getTrainingGroupsWithPlayers } from "../services/trainingGroupService";
 import { useQuery } from "@tanstack/react-query";
 import { useTrainingGroupsWithPlayers } from "../hooks/useTrainingGroupsWithPlayers";
 import { useTeamsWithPlayers } from "../hooks/useTeamsWithPlayers";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const DragAndDropHome = ({ gender, isTraining }) => {
+    const location = useLocation();
+
+    useEffect(() => {}, [location.pathname]);
+
     const {
         data: teams,
         isLoading: isTeamsLoading,
@@ -26,7 +32,7 @@ const DragAndDropHome = ({ gender, isTraining }) => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar gender={gender} isTraining={isTraining} />
             {/* Padding to account for fixed navbar */}
             <DragAndDropTeams
                 gender={gender}

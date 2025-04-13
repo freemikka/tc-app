@@ -4,12 +4,21 @@ import AddTeamForm from "./AddTeamForm";
 import AddTrainingGroupForm from "./AddTrainingGroupForm";
 import { signOutUser } from "../services/authService";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import ExcelDownload from "../features/excelDownload";
 
-function Navbar() {
+function Navbar({ gender, isTraining }) {
     const [activeModal, setActiveModal] = useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
+    const route =
+        gender === "Male"
+            ? isTraining
+                ? "/heren"
+                : "/traininggroep-heren"
+            : isTraining
+            ? "/dames"
+            : "/traininggroep-dames";
 
     const openModal = (modalName) => setActiveModal(modalName);
     const closeModal = () => setActiveModal(null);
@@ -43,10 +52,15 @@ function Navbar() {
                     <div className="hidden md:block">
                         <div className="ml-10 flex items-center space-x-4">
                             <button
-                                onClick={() => openModal("about")}
+                                onClick={() => {
+                                    navigate(route, {
+                                        state: { from: location },
+                                        replace: true,
+                                    });
+                                }}
                                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                             >
-                                About
+                                {isTraining ? "Teams" : "Trainingsgroepen"}
                             </button>
                             <button
                                 onClick={createExcelPrintout}

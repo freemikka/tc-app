@@ -1,5 +1,6 @@
 import apiClient from "../api/client";
-import trainingGroup from "../types/types";
+import { TrainingGroupWithPlayers, trainingGroup } from "../types/types";
+import { mapTrainingGroupWithPlayers } from "../utils/mapper";
 const baseUrl = "/training-groups";
 
 export const getAllTrainingGroups = async () => {
@@ -12,9 +13,11 @@ export const getAllTrainingGroups = async () => {
     }
 };
 
-export const getTrainingGroupsWithPlayers = async (gender: string) => {
+export const getTrainingGroupsWithPlayers = async (
+    gender: string
+): Promise<TrainingGroupWithPlayers> => {
     const response = await apiClient.get(`${baseUrl}/with-players/${gender}`);
-    return response.data;
+    return response.data.map(mapTrainingGroupWithPlayers);
 };
 
 export const createTrainingGroup = async (newTrainingGroup: trainingGroup) => {
