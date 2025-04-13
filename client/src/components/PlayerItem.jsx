@@ -13,6 +13,12 @@ const getPlayerStyle = (playerId) => {
         5: "8px solid #a69b06", // Outside
         6: "8px solid #0008f0", // Diagonal
         7: "8px solid #dc179a", // Libero
+        8: "8px solid #928c90", // No position
+        9: "8px solid #ff0000", // Interest Setter
+        10: "8px solid #02c923", // Interest Middle
+        11: "8px solid #a69b06", // Interest Outside
+        12: "8px solid #0008f0", // Interest Diagonal
+        13: "8px solid #dc179a", // Interest Libero
         // Add more specific player styles as needed
     };
 
@@ -33,6 +39,7 @@ const getPlayerStyle = (playerId) => {
             cursor: "move",
             backgroundColor: "white",
             borderLeft: colors[playerId],
+            fontStyle: playerId > 8 ? "italic" : "normal",
         };
     }
 };
@@ -99,6 +106,36 @@ const PlayerItem = ({ player, onDrop }) => {
             name: "Make libero",
             handleMenuClick: handleMenuClick,
             option: 5,
+        },
+        {
+            name: "No position",
+            handleMenuClick: handleMenuClick,
+            option: 6,
+        },
+        {
+            name: "Interest setter",
+            handleMenuClick: handleMenuClick,
+            option: 7,
+        },
+        {
+            name: "Interest middle",
+            handleMenuClick: handleMenuClick,
+            option: 8,
+        },
+        {
+            name: "Interest outside",
+            handleMenuClick: handleMenuClick,
+            option: 9,
+        },
+        {
+            name: "Interest diagonal",
+            handleMenuClick: handleMenuClick,
+            option: 10,
+        },
+        {
+            name: "Interest libero",
+            handleMenuClick: handleMenuClick,
+            option: 11,
         },
     ];
 
