@@ -19,13 +19,13 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
         }),
     }));
     const sortFn = (a, b) => {
-        if (a.position !== b.position) return a.position - b.position;
+        if (a.position.positionId !== b.position.positionId)
+            return a.position.positionId - b.position.positionId;
         else return a.firstName.localeCompare(b.firstName);
     };
     // Sort players groups alphabetically and by id
     const sortedPlayers = [...team.players].sort(sortFn);
     const teamBoxLength = Math.max(sortedPlayers.length * 9.5, 100);
-
     const { mutate: createHidden } = useCreateHiddenTeam();
     const { mutate: createHiddenTrainingGroup } =
         useCreateHiddenTrainingGroups();
@@ -122,7 +122,7 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
                 style={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: "8px",
+                    gap: "0px",
                 }}
             >
                 {sortedPlayers.map((player) => (

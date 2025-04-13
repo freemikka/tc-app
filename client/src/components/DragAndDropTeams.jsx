@@ -146,9 +146,9 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                 style={{
                     display: "grid",
                     gridTemplateColumns:
-                        "100px repeat(auto-fit, minmax(300px, 300px))",
+                        "100px repeat(auto-fit, minmax(250px, 250px))",
                     gap: "16px",
-                    gridAutoColumns: "minmax(300px, 300px)",
+                    gridAutoColumns: "minmax(200px, 200px)",
                     padding: "16px",
                     overflowX: "auto", // Enable horizontal scrolling
                     // overflowY: "hidden", // Disable vertical scrolling

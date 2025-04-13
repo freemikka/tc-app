@@ -1,15 +1,31 @@
 import { getTeamsWithPlayers } from "../services/teamService";
+import { getTrainingGroupsWithPlayers } from "../services/trainingGroupService";
 import { TeamWithPlayers } from "../types/types";
 import { Player } from "../types/types";
 import * as XLSX from "xlsx-js-style";
 
-const ExcelDownload = async () => {
+const ExcelDownload = async (gender: any, isTraining: any) => {
     const workbook = XLSX.utils.book_new();
     try {
-        const maleTeams = await getTeamsWithPlayers("Male");
-        const femaleTeams = await getTeamsWithPlayers("Female");
-        handleTeamsData(maleTeams, workbook, "Heren teams");
-        handleTeamsData(femaleTeams, workbook, "Dames teams");
+        if (!isTraining) {
+            const maleTeams = await getTeamsWithPlayers("Male");
+            const femaleTeams = await getTeamsWithPlayers("Female");
+            handleTeamsData(maleTeams, workbook, "Heren teams");
+            handleTeamsData(femaleTeams, workbook, "Dames teams");
+        } else {
+            const maleTeams = await getTrainingGroupsWithPlayers("Male");
+            const femaleTeams = await getTrainingGroupsWithPlayers("Female");
+            handleTeamsData(
+                maleTeams as TeamWithPlayers[],
+                workbook,
+                "Heren teams"
+            );
+            handleTeamsData(
+                femaleTeams as TeamWithPlayers[],
+                workbook,
+                "Dames teams"
+            );
+        }
         // Write the workbook to a file
         XLSX.writeFile(workbook, "vertical_teams.xlsx");
     } catch (err) {
@@ -23,17 +39,16 @@ const handleTeamsData = (
     wsName: string
 ) => {
     const sortFn = (a: Player, b: Player) => {
-        if (a.position !== b.position) return a.position - b.position;
+        if (a.position.positionId !== b.position.positionId)
+            return a.position.positionId - b.position.positionId;
         else return a.firstName.localeCompare(b.firstName);
     };
     // Sort players groups alphabetically and by id
-    console.log(teams);
     const sortedTeams = teams.map((team) => ({
         ...team, // spread all other properties (id, name, gender, etc.)
         players: [...team.players].sort(sortFn), // sorted players
     }));
 
-    console.log(sortedTeams);
     const maxPlayers = Math.max(...teams.map((team) => team.players.length));
 
     // Create a 2D array where the first row is the team names (headers)
@@ -64,7 +79,7 @@ const handleTeamsData = (
                     const cellAddress = `${excelCol}${excelRow}`;
 
                     // Store the player's position at this cell
-                    positionMap[cellAddress] = player.position;
+                    positionMap[cellAddress] = player.position.positionColor;
                 }
 
                 return fullName;
@@ -78,20 +93,11 @@ const handleTeamsData = (
         }
     });
 
-    console.log("worksheetData", worksheetData);
-
     // Create a worksheet and apply styles
     const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
 
-    // // Style the headers (team names)
-    // const headerStyle = {
-    //     font: { bold: true, color: { rgb: "FFFFFF" } },
-    //     fill: { fgColor: { rgb: "4F81BD" } }, // Blue background for headers
-    //     alignment: { horizontal: "center", vertical: "center" },
-    // };
-
     // Example styling function
-    const getStyleForPosition = (position: string) => {
+    const getStyleForPosition = (positionColor: string) => {
         const whiteBoldFont = {
             name: "Arial",
             sz: 12,
@@ -106,17 +112,12 @@ const handleTeamsData = (
             border: {}, // No borders at all
         };
 
-        const positionId = Number(position) - 3;
+        const styleMap = {
+            ...baseStyle,
+            fill: { fgColor: { rgb: positionColor.slice(1) } }, // Remove the "#"
+        };
 
-        const styleMap = [
-            { ...baseStyle, fill: { fgColor: { rgb: "ff0000" } } }, // Setter
-            { ...baseStyle, fill: { fgColor: { rgb: "02c923" } } }, // Middle
-            { ...baseStyle, fill: { fgColor: { rgb: "a69b06" } } }, // Outside
-            { ...baseStyle, fill: { fgColor: { rgb: "0008f0" } } }, // Diagonal
-            { ...baseStyle, fill: { fgColor: { rgb: "dc179a" } } }, // Libero
-        ];
-
-        return styleMap[positionId];
+        return styleMap;
     };
 
     // Apply styles using the positionMap

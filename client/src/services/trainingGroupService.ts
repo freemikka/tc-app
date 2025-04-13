@@ -15,7 +15,7 @@ export const getAllTrainingGroups = async () => {
 
 export const getTrainingGroupsWithPlayers = async (
     gender: string
-): Promise<TrainingGroupWithPlayers> => {
+): Promise<TrainingGroupWithPlayers[]> => {
     const response = await apiClient.get(`${baseUrl}/with-players/${gender}`);
     return response.data.map(mapTrainingGroupWithPlayers);
 };

@@ -87,9 +87,12 @@ async function getTeamsWithPlayers(
         first_name,
         last_name,
         traininggroup_id,
-        position_id,
-        Positions (position_name)
-      `
+        position:position_id (
+            id,
+            position_name,
+            position_color
+        )
+        `
         )
         .eq("association_id", associationId);
 
@@ -105,7 +108,7 @@ async function getTeamsWithPlayers(
                 id: player.id,
                 first_name: player.first_name,
                 last_name: player.last_name,
-                position_id: player.position_id || 1,
+                position: player.position,
             })),
     }));
 }

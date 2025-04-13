@@ -3,9 +3,14 @@ export interface Player {
     firstName: string;
     lastName: string;
     email?: string;
-    position: number;
-    team: string;
-    trainingGroup: string;
+    // position: number;
+    position: Position;
+}
+
+export interface Position {
+    positionId: number;
+    positionName: string;
+    positionColor: string;
 }
 
 export interface TeamWithPlayers {

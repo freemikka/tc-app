@@ -36,6 +36,7 @@ router.post(
             const association_id = req.association_id;
             const position_id = req.position_id;
             const traininggroup_id = req.traininggroup_id;
+            console.log(position_id);
 
             const { firstName, lastName, email } = req.body;
             const { data, error } = await supabase
