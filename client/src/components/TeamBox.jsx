@@ -93,7 +93,7 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
                 padding: "16px",
                 border: "1px solid #ddd",
                 borderRadius: "8px",
-                backgroundColor: isOver ? "#f0f9ff" : "white",
+                backgroundColor: isOver ? "#bfdbfe" : "white",
                 height: `${teamBoxLength}vh`,
             }}
         >
