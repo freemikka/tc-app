@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import PlayerItem from "./PlayerItem";
 import { deleteTeam } from "../services/teamService";
@@ -18,13 +18,28 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
             isOver: !!monitor.isOver(),
         }),
     }));
+    const boxRef = useRef(null);
+
+    // Apply background color directly instead of triggering a re-render
+    useEffect(() => {
+        if (boxRef.current) {
+            console.log("useEffect");
+            boxRef.current.style.backgroundColor = isOver ? "#bfdbfe" : "white";
+        }
+    }, [isOver]);
+
+    // console.log("Teambox rendered ", team, new Date());
+
     const sortFn = (a, b) => {
         if (a.position.positionId !== b.position.positionId)
             return a.position.positionId - b.position.positionId;
         else return a.firstName.localeCompare(b.firstName);
     };
     // Sort players groups alphabetically and by id
-    const sortedPlayers = [...team.players].sort(sortFn);
+    const sortedPlayers = useMemo(() => {
+        return [...team.players].sort(sortFn);
+    }, [team.players]);
+
     const teamBoxLength = Math.max(sortedPlayers.length * 9.5, 100);
     const { mutate: createHidden } = useCreateHiddenTeam();
     const { mutate: createHiddenTrainingGroup } =
@@ -88,13 +103,16 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
 
     return (
         <div
-            ref={drop}
+            ref={(node) => {
+                drop(node);
+                boxRef.current = node;
+            }}
             style={{
                 padding: "16px",
                 border: "1px solid #ddd",
                 borderRadius: "8px",
-                backgroundColor: isOver ? "#bfdbfe" : "white",
-                height: `${teamBoxLength}vh`,
+                // backgroundColor: isOver ? "#bfdbfe" : "white",
+                // height: `${teamBoxLength}vh`,
             }}
         >
             <div

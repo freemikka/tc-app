@@ -4,7 +4,7 @@ import { TeamWithPlayers } from "../types/types";
 import { Player } from "../types/types";
 import * as XLSX from "xlsx-js-style";
 
-const ExcelDownload = async (gender: any, isTraining: any) => {
+const ExcelDownload = async (isTraining: any) => {
     const workbook = XLSX.utils.book_new();
     try {
         if (!isTraining) {

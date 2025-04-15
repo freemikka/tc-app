@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -17,6 +17,8 @@ const DotMenu = ({ menuItems }) => {
         setAnchorEl(null);
     };
 
+    // console.log("DotMenu");
+
     return (
         <div>
             <IconButton
@@ -27,29 +29,31 @@ const DotMenu = ({ menuItems }) => {
             >
                 <MoreVertIcon />
             </IconButton>
-            <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleClose}
-            >
-                {menuItems.map((menuItem) => {
-                    return (
-                        <MenuItem
-                            key={menuItem.name}
-                            id={menuItem.name}
-                            onClick={() =>
-                                menuItem.handleMenuClick(menuItem.option)
-                            }
-                        >
-                            {menuItem.name}
-                        </MenuItem>
-                    );
-                })}
-            </Menu>
+            {open && (
+                <Menu
+                    id="long-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={handleClose}
+                >
+                    {menuItems.map((menuItem) => {
+                        return (
+                            <MenuItem
+                                key={menuItem.name}
+                                id={menuItem.name}
+                                onClick={() =>
+                                    menuItem.handleMenuClick(menuItem.option)
+                                }
+                            >
+                                {menuItem.name}
+                            </MenuItem>
+                        );
+                    })}
+                </Menu>
+            )}
         </div>
     );
 };
 
-export default DotMenu;
+export default memo(DotMenu);

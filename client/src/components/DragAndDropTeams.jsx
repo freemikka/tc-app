@@ -17,8 +17,10 @@ import { useProfile } from "../hooks/useProfile";
 import { useTeamsHidden } from "../hooks/useTeamsHidden";
 import { useTrainingGroupsHidden } from "../hooks/useTrainingGroupsHidden";
 import { deleteHiddenTrainingGroup } from "../services/hideTrainingGroupService"; // USE MUTATION
+import MemoizedTeamBoxWrapper from "./MemoizedTeamBoxWrapper";
 
 const DragAndDropTeams = ({ gender, data, queryKey }) => {
+    console.log("DragAndDropTeam");
     const queryClient = useQueryClient();
     const {
         data: profile,
@@ -52,6 +54,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
     React.useEffect(() => {
         if (isUserLoading) return;
         // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
+        console.log("DragAnddropTeams rendered");
         const channel = supabase
             .channel(`players-changes-${profile.association_id}`)
             .on(
@@ -64,7 +67,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                 },
                 (payload) => {
                     console.log("payload", payload);
-                    queryClient.invalidateQueries({ queryKey: [queryKey] });
+                    // queryClient.invalidateQueries({ queryKey: [queryKey] });
                 }
             )
             .subscribe((status) => {
@@ -77,6 +80,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
     }, [profile]);
 
     const handlePlayerDrop = async (player, newTeamId) => {
+        console.log("here ", player);
         if (!newTeamId) return;
 
         const previousTeams = queryClient.getQueryData([queryKey]) || [];
@@ -205,9 +209,11 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                     )}
                 </div>
                 {sortedvisibleTeams.map((team) => (
-                    <TeamBox
+                    <MemoizedTeamBoxWrapper
                         key={team.id}
-                        team={team}
+                        teamId={team.id}
+                        players={team.players}
+                        name={team.name}
                         queryKey={queryKey}
                         onDrop={handlePlayerDrop}
                     />

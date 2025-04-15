@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo, memo } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import DotMenu from "./DotMenu";
 import { useDeletePlayer } from "../mutations/deletePlayer";
@@ -43,9 +43,9 @@ const PlayerItem = ({ player, onDrop }) => {
         }),
     }));
 
-    // console.log(player);
+    // console.log("Playeritem");
 
-    const handleMenuClick = (option) => {
+    const handleMenuClick = useCallback((option) => {
         if (option === 0) {
             //delete player
             mutateDeletePlayer(player.id);
@@ -55,7 +55,7 @@ const PlayerItem = ({ player, onDrop }) => {
                 newPositionId: option - 1, // since the first option is to delete a player we minus one this to get the correct position
             });
         }
-    };
+    });
 
     const playerStyle = getPlayerStyle(
         player.position.positionId,
@@ -63,7 +63,7 @@ const PlayerItem = ({ player, onDrop }) => {
         player.position.positionName
     );
 
-    const menuItems = [
+    const menuItems = useMemo(() => [
         {
             name: "Delete player",
             handleMenuClick: handleMenuClick,
@@ -144,7 +144,7 @@ const PlayerItem = ({ player, onDrop }) => {
             handleMenuClick: handleMenuClick,
             option: 15,
         },
-    ];
+    ]);
 
     return (
         <div
@@ -167,4 +167,4 @@ const PlayerItem = ({ player, onDrop }) => {
     );
 };
 
-export default PlayerItem;
+export default memo(PlayerItem);
