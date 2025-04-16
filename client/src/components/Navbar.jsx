@@ -34,8 +34,8 @@ function Navbar({ gender, isTraining }) {
         }
     };
 
-    const createExcelPrintout = (gender, isTraining) => {
-        ExcelDownload(gender, isTraining);
+    const createExcelPrintout = (isTraining) => {
+        ExcelDownload(isTraining);
     };
 
     return (
@@ -63,9 +63,7 @@ function Navbar({ gender, isTraining }) {
                                 {isTraining ? "Teams" : "Trainingsgroepen"}
                             </button>
                             <button
-                                onClick={() =>
-                                    createExcelPrintout(gender, isTraining)
-                                }
+                                onClick={() => createExcelPrintout(isTraining)}
                                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                             >
                                 Create Excel Printout

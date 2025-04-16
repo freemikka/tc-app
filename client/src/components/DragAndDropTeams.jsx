@@ -20,7 +20,6 @@ import { deleteHiddenTrainingGroup } from "../services/hideTrainingGroupService"
 import MemoizedTeamBoxWrapper from "./MemoizedTeamBoxWrapper";
 
 const DragAndDropTeams = ({ gender, data, queryKey }) => {
-    console.log("DragAndDropTeam");
     const queryClient = useQueryClient();
     const {
         data: profile,
@@ -54,7 +53,6 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
     React.useEffect(() => {
         if (isUserLoading) return;
         // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
-        console.log("DragAnddropTeams rendered");
         const channel = supabase
             .channel(`players-changes-${profile.association_id}`)
             .on(
@@ -80,7 +78,6 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
     }, [profile]);
 
     const handlePlayerDrop = async (player, newTeamId) => {
-        console.log("here ", player);
         if (!newTeamId) return;
 
         const previousTeams = queryClient.getQueryData([queryKey]) || [];

@@ -23,7 +23,6 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
     // Apply background color directly instead of triggering a re-render
     useEffect(() => {
         if (boxRef.current) {
-            console.log("useEffect");
             boxRef.current.style.backgroundColor = isOver ? "#bfdbfe" : "white";
         }
     }, [isOver]);
