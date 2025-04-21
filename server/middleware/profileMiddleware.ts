@@ -10,7 +10,7 @@ declare global {
     }
 }
 
-export const associationMiddleware = async (
+export const profileMiddleware = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -24,17 +24,11 @@ export const associationMiddleware = async (
                 .json({ error: "Unauthorized: User ID missing" });
         }
 
-        if (!req.body) {
-            return res
-                .status(401)
-                .json({ error: "No association name in request" });
-        }
-
         // Query Supabase's `associations` table
-        const { data: association, error } = await supabase
-            .from("Associations")
+        const { data: profile, error } = await supabase
+            .from("Profiles")
             .select("*")
-            .eq("name", req.body.name)
+            .eq("user_id", user_id)
             .single(); // Ensure we get a single record
 
         if (error) {
@@ -42,15 +36,15 @@ export const associationMiddleware = async (
             return res.status(500).json({ error: "Database error" });
         }
 
-        if (!association) {
-            return res.status(404).json({ error: "Association not found" });
+        if (!profile) {
+            return res.status(404).json({ error: "Profile not found" });
         }
 
         // Attach association_id to the request
-        req.association_id = association.id;
+        req.association_id = profile.association_id;
         next();
     } catch (error) {
-        console.error("Error in associationMiddleware:", error);
+        console.error("Error in profileMiddleware:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };

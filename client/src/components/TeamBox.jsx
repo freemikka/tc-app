@@ -28,8 +28,6 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
         }
     }, [isOver]);
 
-    // console.log("Teambox rendered ", team, new Date());
-
     const sortFn = (a, b) => {
         if (a.position.positionId !== b.position.positionId)
             return a.position.positionId - b.position.positionId;

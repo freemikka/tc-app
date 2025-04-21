@@ -1,4 +1,6 @@
 import apiClient from "../api/client";
+import axios from "axios";
+import { Association } from "../types/types";
 const baseUrl = "/profiles";
 
 /**
@@ -14,16 +16,31 @@ export const getProfile = async () => {
     }
 };
 
-export const createProfile = async (associationName: string) => {
+export const createProfile = async (userId: string) => {
     try {
-        const response = await apiClient.post(baseUrl, {
-            name: associationName, // Send name instead of ID
-        });
+        const response = await apiClient.post(baseUrl, { userId: userId });
         return { success: true, data: response.data };
     } catch (error) {
-        return {
-            success: false,
-            message: error instanceof Error ? error.message : "Request failed",
-        };
+        if (axios.isAxiosError(error)) {
+            // This will trigger useMutation's onError!
+            throw new Error(error.response?.data?.message || "Request failed");
+        } else {
+            throw new Error("Unknown error occurred");
+        }
+    }
+};
+
+export const updateProfile = async (association: Association) => {
+    try {
+        console.log(association);
+        const response = await apiClient.put(baseUrl, association);
+        return { success: true, data: response.data };
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            // This will trigger useMutation's onError!
+            throw new Error(error.response?.data?.message || "Request failed");
+        } else {
+            throw new Error("Unknown error occurred");
+        }
     }
 };

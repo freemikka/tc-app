@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import supabase from "../utils/supabase"; // Import your supabase client
 import { useNavigate } from "react-router-dom";
+import { createProfile } from "../services/profileService";
 
 const SignUpPage = () => {
     const [email, setEmail] = useState("");
@@ -14,11 +15,15 @@ const SignUpPage = () => {
         setError(null);
 
         try {
-            const { user, error } = await supabase.auth.signUp({
+            const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
             });
 
+            console.log("data.user", data.user.id);
+
+            const response = await createProfile(data.user.id);
+            console.log("response", response);
             if (error) throw error;
             // You can redirect to a login page or home page here
             navigate("/");

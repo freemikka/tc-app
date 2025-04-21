@@ -1,6 +1,6 @@
 import express, { Router, Request } from "express";
 import { authMiddleware } from "../middleware/auth.js";
-import { associationMiddleware } from "../middleware/associationMiddleware.js";
+import { profileMiddleware } from "../middleware/profileMiddleware.js";
 import { TeamWithPlayers } from "../types/types.js";
 import supabase from "../supabase/supabase.js";
 const baseUrl = "/hidden-teams";
@@ -10,7 +10,7 @@ const router: Router = express.Router();
 router.get(
     `${baseUrl}/:gender`,
     authMiddleware, // Ensures req.user.id exists
-    associationMiddleware, // Ensures req.association_id exists
+    profileMiddleware, // Ensures req.association_id exists
     async (req: Request, res) => {
         const gender = req.params.gender;
         const association_id = req.association_id;
@@ -43,7 +43,7 @@ router.get(
 router.post(
     baseUrl,
     authMiddleware, // Ensures req.user.id exists
-    associationMiddleware, // Ensures req.association_id exists
+    profileMiddleware, // Ensures req.association_id exists
     async (req: Request, res) => {
         const association_id = req.association_id;
         const user_id = req.user?.id;
@@ -75,7 +75,7 @@ router.post(
 router.delete(
     `${baseUrl}/:id`, // Base URL with `:id` parameter
     authMiddleware,
-    associationMiddleware,
+    profileMiddleware,
     async (req, res) => {
         const teamId = req.params.id;
 

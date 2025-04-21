@@ -6,11 +6,14 @@ import {
     Navigate,
 } from "react-router-dom";
 
+import { Toaster } from "react-hot-toast";
+
 import SignUpPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import DragAndDropHome from "./components/DragAndDropHome";
 import RequireAuth from "./components/RequireAuth";
+import PickAssocation from "./components/PickAssociation";
 function App() {
     const genderRoutes = [
         {
@@ -37,14 +40,18 @@ function App() {
 
     return (
         <Router>
+            <Toaster />
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
 
                 {/* Protected routes */}
                 <Route element={<RequireAuth />}>
-                    {" "}
                     <Route path="/" element={<HomePage />} />
+                    <Route
+                        path="join-association"
+                        element={<PickAssocation />}
+                    />
                     {genderRoutes.map((route) => (
                         <Route
                             key={route.path}

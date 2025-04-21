@@ -37,3 +37,7 @@ export interface trainingGroup {
     name: string;
     gender: string;
 }
+
+export interface Association {
+    name: string;
+}

@@ -1,6 +1,6 @@
 import express, { Router, Request } from "express";
 import { authMiddleware } from "../middleware/auth.js";
-import { associationMiddleware } from "../middleware/associationMiddleware.js";
+import { profileMiddleware } from "../middleware/profileMiddleware.js";
 import { TeamWithPlayers } from "../types/types.js";
 import supabase from "../supabase/supabase.js";
 const baseUrl = "/teams";
@@ -10,7 +10,7 @@ const router: Router = express.Router();
 router.get(
     baseUrl,
     authMiddleware, // Ensures req.user.id exists
-    associationMiddleware, // Ensures req.association_id exists
+    profileMiddleware, // Ensures req.association_id exists
     async (req: Request, res) => {
         try {
             const { data: teams, error } = await supabase
@@ -34,7 +34,7 @@ router.get(
 router.get(
     `${baseUrl}/with-players/:gender`,
     authMiddleware,
-    associationMiddleware,
+    profileMiddleware,
     async (req: Request, res) => {
         try {
             const associationId = req.association_id;
@@ -116,7 +116,7 @@ async function getTeamsWithPlayers(
 router.post(
     baseUrl,
     authMiddleware, // Ensures req.user.id exists
-    associationMiddleware, // Ensures req.association_id exists
+    profileMiddleware, // Ensures req.association_id exists
     async (req: Request, res) => {
         try {
             const association_id = req.association_id;
@@ -157,7 +157,7 @@ router.post(
 router.delete(
     `${baseUrl}/:id`, // Base URL with `:id` parameter
     authMiddleware,
-    associationMiddleware,
+    profileMiddleware,
     async (req, res) => {
         const teamId = req.params.id;
         console.log(teamId);

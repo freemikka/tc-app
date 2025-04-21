@@ -5,7 +5,8 @@ import AddTrainingGroupForm from "./AddTrainingGroupForm";
 import { signOutUser } from "../services/authService";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useNavigate, useLocation } from "react-router-dom";
-import ExcelDownload from "../features/excelDownload";
+import ExcelDownload from "../features/excelDownload"; // Uses some NodeJs library that isnt supported in the browser TODO
+import { getAllAssociationJoinRequests } from "../services/associationService";
 
 function Navbar({ gender, isTraining }) {
     const [activeModal, setActiveModal] = useState(null);
@@ -31,6 +32,15 @@ function Navbar({ gender, isTraining }) {
             navigate("/login");
         } else {
             console.error("Sign out failed:", error);
+        }
+    };
+
+    const handleRequestBtn = async () => {
+        try {
+            const res = await getAllAssociationJoinRequests();
+            console.log(res);
+        } catch {
+            console.log("error");
         }
     };
 
@@ -99,6 +109,12 @@ function Navbar({ gender, isTraining }) {
                         className="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-medium py-2 px-4 rounded transition-colors"
                     >
                         Sign out
+                    </button>
+                    <button
+                        onClick={handleRequestBtn}
+                        className="bg-green-600 hover:bg-green-400 hover:cursor-pointer text-white font-medium py-2 px-4 rounded transition-colors"
+                    >
+                        Requests
                     </button>
                     {/* Mobile menu button */}
                     <div className="md:hidden">

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import supabase from "../supabase/supabase.js";
 import { authMiddleware } from "../middleware/auth.js";
 import { teamMiddleware } from "../middleware/teamMiddleware.js";
-import { associationMiddleware } from "../middleware/associationMiddleware.js";
+import { profileMiddleware } from "../middleware/profileMiddleware.js";
 import { positionMiddleware } from "../middleware/positionMiddleware.js";
 import { trainingGroupMiddleware } from "../middleware/trainingGroupMiddleware.js";
 
@@ -26,7 +26,7 @@ router.get(baseUrl, authMiddleware, async (_req, res) => {
 router.post(
     baseUrl,
     authMiddleware,
-    associationMiddleware,
+    profileMiddleware,
     teamMiddleware,
     trainingGroupMiddleware,
     positionMiddleware,
@@ -66,7 +66,7 @@ router.post(
 router.put(
     `${baseUrl}/team`,
     authMiddleware,
-    associationMiddleware,
+    profileMiddleware,
     async (req, res) => {
         try {
             const { playerId, teamId } = req.body;
@@ -89,7 +89,7 @@ router.put(
 router.put(
     `${baseUrl}/training-group`,
     authMiddleware,
-    associationMiddleware,
+    profileMiddleware,
     async (req, res) => {
         try {
             const { playerId, trainingGroupId } = req.body;
@@ -112,7 +112,7 @@ router.put(
 router.put(
     `${baseUrl}/:id/position`,
     authMiddleware,
-    associationMiddleware,
+    profileMiddleware,
     async (req, res) => {
         try {
             const { newPositionId } = req.body;
@@ -136,7 +136,7 @@ router.put(
 router.delete(
     `${baseUrl}/:id`, // Base URL with `:id` parameter
     authMiddleware,
-    associationMiddleware,
+    profileMiddleware,
     async (req, res) => {
         const playerId = req.params.id;
 
