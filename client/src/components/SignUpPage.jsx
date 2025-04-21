@@ -20,10 +20,7 @@ const SignUpPage = () => {
                 password,
             });
 
-            console.log("data.user", data.user.id);
-
             const response = await createProfile(data.user.id);
-            console.log("response", response);
             if (error) throw error;
             // You can redirect to a login page or home page here
             navigate("/");

@@ -11,7 +11,6 @@ const HomePage = () => {
         const fetchProfile = async () => {
             try {
                 const response = await getProfile();
-                console.log(response);
                 if (!response.association_id) {
                     navigate("/join-association");
                 }

@@ -86,12 +86,12 @@ router.delete(
 
             if (error) throw error;
 
-            res.status(200).json({
-                message: "Team and players deleted successfully",
+            return res.status(200).json({
+                message: "Hidden team deleted successfully",
             });
         } catch (error) {
             console.log(error);
-            res.status(500).json({ error: "Failed to delete team" });
+            return res.status(500).json({ error: "Failed to delete team" });
         }
     }
 );

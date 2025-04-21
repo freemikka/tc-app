@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "../services/profileService";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 export const useJoinAssociation = () => {
     const queryClient = useQueryClient();

@@ -17,8 +17,6 @@ const DotMenu = ({ menuItems }) => {
         setAnchorEl(null);
     };
 
-    // console.log("DotMenu");
-
     return (
         <div>
             <IconButton

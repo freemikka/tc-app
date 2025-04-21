@@ -43,8 +43,6 @@ const PlayerItem = ({ player, onDrop }) => {
         }),
     }));
 
-    // console.log("Playeritem");
-
     const handleMenuClick = useCallback((option) => {
         if (option === 0) {
             //delete player

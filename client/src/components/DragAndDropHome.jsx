@@ -24,8 +24,6 @@ const DragAndDropHome = ({ gender, isTraining }) => {
         return <div>Loading</div>;
     }
 
-    console.log("here dndhome");
-
     return (
         <div>
             <Navbar gender={gender} isTraining={isTraining} />

@@ -41,3 +41,8 @@ export interface trainingGroup {
 export interface Association {
     name: string;
 }
+
+export interface AcceptRequestData {
+    userId: string;
+    associationId: number;
+}

@@ -3,10 +3,10 @@ import AddPlayerForm from "./AddPlayerForm";
 import AddTeamForm from "./AddTeamForm";
 import AddTrainingGroupForm from "./AddTrainingGroupForm";
 import { signOutUser } from "../services/authService";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useLocation } from "react-router-dom";
 import ExcelDownload from "../features/excelDownload"; // Uses some NodeJs library that isnt supported in the browser TODO
-import { getAllAssociationJoinRequests } from "../services/associationService";
+import ShowJoinRequests from "./ShowJoinRequests";
 
 function Navbar({ gender, isTraining }) {
     const [activeModal, setActiveModal] = useState(null);
@@ -27,20 +27,10 @@ function Navbar({ gender, isTraining }) {
     const handleSignOut = async () => {
         const error = await signOutUser();
         if (!error) {
-            console.log("handleSignOut");
             queryClient.invalidateQueries({ queryKey: ["authSession"] });
             navigate("/login");
         } else {
             console.error("Sign out failed:", error);
-        }
-    };
-
-    const handleRequestBtn = async () => {
-        try {
-            const res = await getAllAssociationJoinRequests();
-            console.log(res);
-        } catch {
-            console.log("error");
         }
     };
 
@@ -110,12 +100,8 @@ function Navbar({ gender, isTraining }) {
                     >
                         Sign out
                     </button>
-                    <button
-                        onClick={handleRequestBtn}
-                        className="bg-green-600 hover:bg-green-400 hover:cursor-pointer text-white font-medium py-2 px-4 rounded transition-colors"
-                    >
-                        Requests
-                    </button>
+                    {/* Requests */}
+                    <ShowJoinRequests />
                     {/* Mobile menu button */}
                     <div className="md:hidden">
                         <button

@@ -1,5 +1,5 @@
 import apiClient from "../api/client";
-import { Association } from "../types/types";
+import { Association, AcceptRequestData } from "../types/types";
 import axios from "axios";
 const baseUrl = "/associations";
 
@@ -51,6 +51,40 @@ export const createAssociationJoinRequest = async (
         const { data } = await apiClient.post(
             `${baseUrl}/request`,
             newAssociation
+        );
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.error || "Request failed");
+        } else {
+            throw new Error("Unknown error occurred");
+        }
+    }
+};
+
+export const acceptAssociationJoinRequest = async (
+    acceptData: AcceptRequestData
+) => {
+    try {
+        const { userId, associationId } = acceptData;
+        const { data } = await apiClient.post(`${baseUrl}/accept-request`, {
+            userId: userId,
+            associationId: associationId,
+        });
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.error || "Request failed");
+        } else {
+            throw new Error("Unknown error occurred");
+        }
+    }
+};
+
+export const rejectAssociationJoinRequest = async (userId: string) => {
+    try {
+        const { data } = await apiClient.delete(
+            `${baseUrl}/reject-request/${userId}`
         );
         return data;
     } catch (error) {

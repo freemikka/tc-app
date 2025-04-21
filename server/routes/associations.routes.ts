@@ -76,4 +76,51 @@ router.post(
         return res.status(201).json(data);
     }
 );
+
+router.post(`${baseUrl}/accept-request`, authMiddleware, async (req, res) => {
+    const { userId, associationId } = req.body;
+    /* First update the profile */
+    const { data, error } = await supabase
+        .from("Profiles")
+        .update({ association_id: associationId })
+        .eq("user_id", userId);
+
+    if (error) {
+        return res.status(500).json({ error: error.message });
+    }
+
+    /* Then delete the request */
+    const responseDelete = await supabase
+        .from("AssociationJoinRequests")
+        .delete()
+        .eq("user_id", userId);
+
+    if (responseDelete.error) {
+        return res.status(500).json({ error: responseDelete.error.message });
+    }
+
+    return res.status(201).json(data);
+});
+
+router.delete(
+    `${baseUrl}/reject-request/:userId`,
+    authMiddleware,
+    async (req, res) => {
+        const userId = req.params.userId;
+        const { data, error } = await supabase
+            .from("AssociationJoinRequests")
+            .delete()
+            .eq("user_id", userId)
+            .select();
+
+        console.log(data);
+        console.log(error);
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
+
+        return res.status(201).json(data);
+    }
+);
+
 export default router;

@@ -6,7 +6,7 @@ import {
     Navigate,
 } from "react-router-dom";
 
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "sonner";
 
 import SignUpPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";

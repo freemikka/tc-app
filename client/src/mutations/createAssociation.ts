@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAssociation } from "../services/associationService";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 export const useCreateAssociation = () => {
     const queryClient = useQueryClient();
