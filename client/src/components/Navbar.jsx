@@ -4,7 +4,7 @@ import AddTeamForm from "./AddTeamForm";
 import AddTrainingGroupForm from "./AddTrainingGroupForm";
 import { signOutUser } from "../services/authService";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, replace } from "react-router-dom";
 import ExcelDownload from "../features/excelDownload"; // Uses some NodeJs library that isnt supported in the browser TODO
 import ShowJoinRequests from "./ShowJoinRequests";
 
@@ -28,7 +28,7 @@ function Navbar({ gender, isTraining }) {
         const error = await signOutUser();
         if (!error) {
             queryClient.invalidateQueries({ queryKey: ["authSession"] });
-            navigate("/login");
+            navigate("/login", { replace: true });
         } else {
             console.error("Sign out failed:", error);
         }

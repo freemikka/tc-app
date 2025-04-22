@@ -40,7 +40,7 @@ function App() {
 
     return (
         <Router>
-            <Toaster />
+            <Toaster position="top-right" />
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />

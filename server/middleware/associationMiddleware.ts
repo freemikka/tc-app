@@ -34,7 +34,7 @@ export const associationMiddleware = async (
         const { data: association, error } = await supabase
             .from("Associations")
             .select("*")
-            .eq("name", req.body.name)
+            .ilike("name", req.body.name)
             .single(); // Ensure we get a single record
 
         if (error) {

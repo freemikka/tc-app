@@ -59,6 +59,7 @@ router.post(
     associationMiddleware,
     async (req, res) => {
         const association_id = req.association_id;
+        console.log(association_id);
         const { data, error } = await supabase
             .from("AssociationJoinRequests")
             .insert({ user_id: req.user?.id, association_id: association_id })

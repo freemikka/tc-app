@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import PlayerItem from "./PlayerItem";
 import { deleteTeam } from "../services/teamService";
-import { createHiddenTeam } from "../services/hideTeamService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import DotMenu from "./DotMenu";
 import { useCreateHiddenTeam } from "../mutations/createHiddenTeams";
 import { useCreateHiddenTrainingGroups } from "../mutations/createHiddenTrainingGroups";
