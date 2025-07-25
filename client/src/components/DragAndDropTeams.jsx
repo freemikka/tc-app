@@ -64,7 +64,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                     filter: `association_id=eq.${profile.association_id}`,
                 },
                 (payload) => {
-                    // console.log("payload", payload);
+                    console.log("payload", payload);
                     // queryClient.invalidateQueries({ queryKey: [queryKey] });
                 }
             )

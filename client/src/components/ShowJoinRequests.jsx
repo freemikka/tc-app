@@ -8,10 +8,6 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { getAllAssociationJoinRequests } from "../services/associationService";
 import { Check, X } from "lucide-react";
-import {
-    acceptAssociationJoinRequest,
-    rejectAssociationJoinRequest,
-} from "../services/associationService";
 import { useAcceptAssociation } from "../mutations/acceptJoinAssociation";
 import { useRejectAssociation } from "../mutations/rejectJoinAssociation";
 
@@ -48,7 +44,7 @@ export function ShowJoinRequests() {
     };
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="px-4 py-2 bg-blue-600 text-white rounded">
+            <DropdownMenuTrigger className="px-3 py-3 bg-blue-600 hover:cursor-pointer text-white rounded">
                 Requests
             </DropdownMenuTrigger>
             <DropdownMenuContent>

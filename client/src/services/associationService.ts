@@ -37,7 +37,7 @@ export const createAssociation = async (newAssociation: Association) => {
         if (axios.isAxiosError(error)) {
             console.log("here: ", error);
             // This will trigger useMutation's onError!
-            throw new Error(error.response?.data?.message || "Request failed");
+            throw new Error(error.response?.data?.error || "Request failed");
         } else {
             throw new Error("Unknown error occurred");
         }

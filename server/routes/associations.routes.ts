@@ -27,6 +27,7 @@ router.get(
     profileMiddleware,
     async (req, res) => {
         const association_id = req.association_id;
+        console.log(association_id);
         const { data, error } = await supabase
             .from("AssociationJoinRequests")
             .select("*")

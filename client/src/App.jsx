@@ -12,7 +12,9 @@ import SignUpPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import DragAndDropHome from "./components/DragAndDropHome";
-import RequireAuth from "./components/RequireAuth";
+import RequireAuth from "./guards/RequireAuth";
+import RequireAssociation from "./guards/RequireAssociation";
+
 import PickAssocation from "./components/PickAssociation";
 function App() {
     const genderRoutes = [
@@ -47,23 +49,27 @@ function App() {
 
                 {/* Protected routes */}
                 <Route element={<RequireAuth />}>
-                    <Route path="/" element={<HomePage />} />
                     <Route
                         path="join-association"
                         element={<PickAssocation />}
                     />
-                    {genderRoutes.map((route) => (
-                        <Route
-                            key={route.path}
-                            path={route.path}
-                            element={
-                                <DragAndDropHome
-                                    gender={route.gender}
-                                    isTraining={route.type === "training"}
-                                />
-                            }
-                        />
-                    ))}
+                    {/* Association routes */}
+                    <Route element={<RequireAssociation />}>
+                        <Route path="/" element={<HomePage />} />
+
+                        {genderRoutes.map((route) => (
+                            <Route
+                                key={route.path}
+                                path={route.path}
+                                element={
+                                    <DragAndDropHome
+                                        gender={route.gender}
+                                        isTraining={route.type === "training"}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Route>
                 </Route>
             </Routes>
         </Router>

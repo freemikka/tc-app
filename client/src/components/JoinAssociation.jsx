@@ -11,22 +11,6 @@ const JoinAssociation = () => {
 
     const { mutate: joinAssociationRequest } = useJoinAssociationRequest();
 
-    useEffect(() => {
-        const fetchAssociations = async () => {
-            try {
-                const data = await getAllAssociations();
-                if (data) {
-                    setAllAssociations(data);
-                    setFilteredAssociations(data); // Initially show all
-                }
-            } catch (err) {
-                console.error("Error fetching associations:", err);
-            }
-        };
-
-        fetchAssociations();
-    }, []); //
-
     // Filter associations as user types
     const handleAssociationChange = (e) => {
         const value = e.target.value;

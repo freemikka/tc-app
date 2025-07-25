@@ -8,7 +8,9 @@ export const useCreateAssociation = () => {
     return useMutation({
         mutationFn: createAssociation,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["associations"] });
+            queryClient.invalidateQueries({
+                queryKey: ["associations", "profile"],
+            });
             toast.success("Association created!");
         },
         onError: (err) => {

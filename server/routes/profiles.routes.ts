@@ -86,7 +86,7 @@ router.get(baseUrl, authMiddleware, async (req, res) => {
         // Fetch profile
         const { data: profile, error: dbError } = await supabase
             .from("Profiles")
-            .select("*")
+            .select("*, Associations(*)")
             .eq("user_id", user_id)
             .single();
 

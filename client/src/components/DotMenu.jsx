@@ -41,7 +41,10 @@ const DotMenu = ({ menuItems }) => {
                                 key={menuItem.name}
                                 id={menuItem.name}
                                 onClick={() =>
-                                    menuItem.handleMenuClick(menuItem.option)
+                                    menuItem.handleMenuClick(
+                                        menuItem.MENU_TYPE,
+                                        menuItem.MENU_ACTION
+                                    )
                                 }
                             >
                                 {menuItem.name}

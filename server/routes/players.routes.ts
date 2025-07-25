@@ -115,6 +115,7 @@ router.put(
     profileMiddleware,
     async (req, res) => {
         try {
+            console.log("hello?");
             const { newPositionId } = req.body;
             const playerId = req.params.id;
             const { data, error } = await supabase

@@ -153,6 +153,7 @@ const AddPlayerForm = () => {
                             value={formData.trainingGroup}
                             onChange={handleChange}
                             className="border rounded p-2"
+                            required
                         >
                             <option value="">Select Traininggroup</option>
                             {trainingGroups.map((trainingGroup) => (
