@@ -13,7 +13,7 @@ import ExcelDownload from "../features/excelDownload"; // Uses some NodeJs libra
 import ShowJoinRequests from "@/components/ShowJoinRequests";
 import { signOutUser } from "../services/authService";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 const Navbar = () => {
     const navigate = useNavigate();
