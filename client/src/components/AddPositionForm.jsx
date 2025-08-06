@@ -36,7 +36,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { useCreatePosition } from "../mutations/CreatePosition";
+import { useCreatePosition } from "../mutations/createPosition";
 
 const hexColorRegex = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
 
