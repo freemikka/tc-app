@@ -218,7 +218,7 @@ const AddPlayerForm = () => {
                                                     return (
                                                         <SelectItem
                                                             key={team.id}
-                                                            value={team.id}
+                                                            value={team.name}
                                                         >
                                                             {team.name}
                                                         </SelectItem>
