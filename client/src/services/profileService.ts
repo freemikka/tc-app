@@ -11,7 +11,6 @@ export const getProfile = async () => {
         const response = await apiClient.get(baseUrl);
         return response.data;
     } catch (error) {
-        console.error("Failed to fetch profile:", error);
         throw error; // Let components handle errors
     }
 };

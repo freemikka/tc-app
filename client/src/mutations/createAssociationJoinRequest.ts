@@ -12,7 +12,7 @@ export const useJoinAssociationRequest = () => {
             toast.success("Sending a join request!");
         },
         onError: (err) => {
-            toast.error(err.message);
+            toast.error(`Error: ${err.message}`);
         },
     });
 };

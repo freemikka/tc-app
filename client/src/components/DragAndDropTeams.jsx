@@ -160,6 +160,8 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                     paddingBottom: "100px", // Space for scrollbar
                     marginBottom: "-6px", // Pulls scrollbar into padding area
                     scrollbarGutter: "stable", // Prevents layout shift (modern browsers)
+                    background:
+                        "radial-gradient(125% 125% at 50% 90%, #fff 40%, #0e671d 100%)",
                 }}
             >
                 <div

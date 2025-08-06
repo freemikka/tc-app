@@ -40,12 +40,6 @@ router.get(
             const associationId = req.association_id;
             const gender = req.params.gender;
 
-            if (!associationId) {
-                return res
-                    .status(400)
-                    .json({ error: "Association ID missing" });
-            }
-
             if (!gender) {
                 return res.status(400).json({
                     error: "Must send a gender when requesting teams with players",

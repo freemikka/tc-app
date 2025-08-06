@@ -9,6 +9,7 @@ export interface Player {
 
 export interface Position {
     positionId: number;
+    associationId: number;
     positionName: string;
     positionColor: string;
 }

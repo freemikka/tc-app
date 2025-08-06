@@ -1,4 +1,6 @@
 import apiClient from "../api/client";
+import { Position } from "../types/types";
+
 const baseUrl = "/positions";
 
 export const getAllPositions = async () => {
@@ -7,6 +9,17 @@ export const getAllPositions = async () => {
         return response.data;
     } catch (error) {
         console.error("Error fetching positions:", error);
+        throw error;
+    }
+};
+
+export const createPosition = async (newPosition: Position) => {
+    console.log(newPosition);
+    try {
+        const response = await apiClient.post<Position>(baseUrl, newPosition);
+        return response.data;
+    } catch (error) {
+        console.error("Error posting positions:", error);
         throw error;
     }
 };

@@ -29,69 +29,31 @@ export const getAllAssociationJoinRequests = async () => {
 };
 
 export const createAssociation = async (newAssociation: Association) => {
-    try {
-        const { data } = await apiClient.post(baseUrl, newAssociation);
-        return data;
-    } catch (error) {
-        console.log(error);
-        if (axios.isAxiosError(error)) {
-            console.log("here: ", error);
-            // This will trigger useMutation's onError!
-            throw new Error(error.response?.data?.error || "Request failed");
-        } else {
-            throw new Error("Unknown error occurred");
-        }
-    }
+    const { data } = await apiClient.post(baseUrl, newAssociation);
+    return data;
 };
 
 export const createAssociationJoinRequest = async (
     newAssociation: Association
 ) => {
-    try {
-        const { data } = await apiClient.post(
-            `${baseUrl}/request`,
-            newAssociation
-        );
-        return data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            throw new Error(error.response?.data?.error || "Request failed");
-        } else {
-            throw new Error("Unknown error occurred");
-        }
-    }
+    const { data } = await apiClient.post(`${baseUrl}/request`, newAssociation);
+    return data;
 };
 
 export const acceptAssociationJoinRequest = async (
     acceptData: AcceptRequestData
 ) => {
-    try {
-        const { userId, associationId } = acceptData;
-        const { data } = await apiClient.post(`${baseUrl}/accept-request`, {
-            userId: userId,
-            associationId: associationId,
-        });
-        return data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            throw new Error(error.response?.data?.error || "Request failed");
-        } else {
-            throw new Error("Unknown error occurred");
-        }
-    }
+    const { userId, associationId } = acceptData;
+    const { data } = await apiClient.post(`${baseUrl}/accept-request`, {
+        userId: userId,
+        associationId: associationId,
+    });
+    return data;
 };
 
 export const rejectAssociationJoinRequest = async (userId: string) => {
-    try {
-        const { data } = await apiClient.delete(
-            `${baseUrl}/reject-request/${userId}`
-        );
-        return data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            throw new Error(error.response?.data?.error || "Request failed");
-        } else {
-            throw new Error("Unknown error occurred");
-        }
-    }
+    const { data } = await apiClient.delete(
+        `${baseUrl}/reject-request/${userId}`
+    );
+    return data;
 };

@@ -7,6 +7,7 @@ import { usePositions } from "../hooks/usePositions";
 import AddPlayerForm from "./AddPlayerForm";
 // Player ID based styling
 const getPlayerStyle = (playerId, playerColor, positionName) => {
+    console.log(positionName);
     // If player has specific styling
     return {
         padding: "2px",
@@ -91,8 +92,8 @@ const PlayerItem = ({ player, onDrop }) => {
             ...positions.map((position) => ({
                 name: position.position_name,
                 handleMenuClick: handleMenuClick,
-                MENU_ACTION: position.id,
                 MENU_TYPE: "UPDATE POSITION",
+                MENU_ACTION: position.id,
             })),
         ];
     }, [positions, handleMenuClick]);

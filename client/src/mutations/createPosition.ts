@@ -1,17 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createAssociation } from "../services/associationService";
+import { createPosition } from "../services/positionService";
 import { toast } from "sonner";
 
-export const useCreateAssociation = () => {
+export const useCreatePosition = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: createAssociation,
+        mutationFn: createPosition,
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["associations", "profile"],
+                queryKey: ["positions"],
             });
-            toast.success("Association created!");
+            toast.success("Position created!");
         },
         onError: (err) => {
             console.log(err);

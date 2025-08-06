@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import { Toaster } from "sonner";
-
+import Layout from "./Layout/Layout";
 import SignUpPage from "./components/SignUpPage";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
@@ -55,20 +55,24 @@ function App() {
                     />
                     {/* Association routes */}
                     <Route element={<RequireAssociation />}>
-                        <Route path="/" element={<HomePage />} />
+                        <Route path="/" element={<Layout />}>
+                            <Route path="/" element={<HomePage />} />
 
-                        {genderRoutes.map((route) => (
-                            <Route
-                                key={route.path}
-                                path={route.path}
-                                element={
-                                    <DragAndDropHome
-                                        gender={route.gender}
-                                        isTraining={route.type === "training"}
-                                    />
-                                }
-                            />
-                        ))}
+                            {genderRoutes.map((route) => (
+                                <Route
+                                    key={route.path}
+                                    path={route.path}
+                                    element={
+                                        <DragAndDropHome
+                                            gender={route.gender}
+                                            isTraining={
+                                                route.type === "training"
+                                            }
+                                        />
+                                    }
+                                />
+                            ))}
+                        </Route>
                     </Route>
                 </Route>
             </Routes>

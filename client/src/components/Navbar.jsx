@@ -8,6 +8,7 @@ import { useNavigate, useLocation, replace } from "react-router-dom";
 import { useProfile } from "../hooks/useProfile";
 import ExcelDownload from "../features/excelDownload"; // Uses some NodeJs library that isnt supported in the browser TODO
 import ShowJoinRequests from "./ShowJoinRequests";
+import { Button } from "@/components/ui/button";
 
 function Navbar({ gender, isTraining }) {
     const [activeModal, setActiveModal] = useState(null);
@@ -79,6 +80,12 @@ function Navbar({ gender, isTraining }) {
                             >
                                 Create Excel Printout
                             </button>
+                            <Button
+                                variant="outline"
+                                onClick={() => openModal("AddTeam")}
+                            >
+                                Hey 2
+                            </Button>
                             <button
                                 onClick={() => openModal("AddTeam")}
                                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"

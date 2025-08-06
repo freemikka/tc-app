@@ -17,7 +17,6 @@ export const profileMiddleware = async (
 ) => {
     try {
         const user_id = req.user?.id;
-
         if (!user_id) {
             return res
                 .status(401)

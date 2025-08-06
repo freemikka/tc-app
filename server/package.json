@@ -28,7 +28,9 @@
         "cors": "^2.8.5",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
+        "lru-cache": "^11.1.0",
         "morgan": "^1.10.0",
+        "node-cache": "^5.1.2",
         "react-cookie": "^8.0.1",
         "supabase": "^2.20.5"
     },
