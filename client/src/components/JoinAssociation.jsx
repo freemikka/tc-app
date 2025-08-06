@@ -11,6 +11,14 @@ const JoinAssociation = () => {
 
     const { mutate: joinAssociationRequest } = useJoinAssociationRequest();
 
+    useEffect(() => {
+        const fetchAssociations = async () => {
+            const getCurrAssociations = await getAllAssociations();
+            setAllAssociations(getCurrAssociations);
+        };
+        fetchAssociations();
+    }, []);
+
     // Filter associations as user types
     const handleAssociationChange = (e) => {
         const value = e.target.value;
@@ -20,6 +28,7 @@ const JoinAssociation = () => {
             assoc.name.toLowerCase().includes(value.toLowerCase())
         );
         setFilteredAssociations(filtered);
+        console.log(filtered);
     };
 
     const handleSubmit = async (e) => {
@@ -49,11 +58,14 @@ const JoinAssociation = () => {
             </form>
 
             {filteredAssociations.length > 0 && associationName && (
-                <div>
-                    <h3 className="font-medium">Matching Associations:</h3>
-                    <ul className="space-y-1">
+                <div className="mt-6 w-full max-w-md overflow-y-auto flex-1">
+                    <h3 className="font-medium mb-2">Matching Associations:</h3>
+                    <ul className="space-y-1 max-h-48 overflow-y-auto pr-2">
                         {filteredAssociations.map((assoc) => (
-                            <li key={assoc.id} className="p-2 hover:bg-gray-50">
+                            <li
+                                key={assoc.id}
+                                className="p-2 hover:bg-gray-50 border rounded"
+                            >
                                 {assoc.name}
                             </li>
                         ))}
