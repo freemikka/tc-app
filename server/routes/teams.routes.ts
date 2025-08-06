@@ -115,6 +115,9 @@ router.post(
         try {
             const association_id = req.association_id;
             const { name, gender } = req.body;
+            console.log(name);
+            console.log(gender);
+            console.log(association_id);
             const { data: currentTeams } = await supabase
                 .from("Teams")
                 .select("*")

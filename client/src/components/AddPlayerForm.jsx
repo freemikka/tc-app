@@ -88,7 +88,10 @@ const AddPlayerForm = () => {
                     : z.string().optional(),
             team:
                 teams && teams.length > 0
-                    ? z.enum([teams[0].id, ...teams.slice(1).map((t) => t.id)])
+                    ? z.enum([
+                          teams[0].name,
+                          ...teams.slice(1).map((t) => t.name),
+                      ])
                     : z.string().optional(),
             trainingGroup:
                 trainingGroups && trainingGroups.length > 0
@@ -116,13 +119,7 @@ const AddPlayerForm = () => {
     });
 
     const onSubmit = (values) => {
-        console.log(values);
-        console.log(values, { team: values.team.split("-")[1] });
-        console.log({ team: values.team.split("-")[1] });
-        const selectedTeam = teams.find(
-            (team) => team.id.toString() === values.team
-        );
-        createPlayer({ values, team: selectedTeam });
+        createPlayer({ ...values });
         form.reset({ position: "" });
         form.setValue("position", values.position);
         form.setValue("team", values.team);

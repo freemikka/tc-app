@@ -8,7 +8,6 @@ import AssociationView from "./AssociationView";
 const HomePage = () => {
     const location = useLocation();
 
-    console.log(location.pathname); // e.g., "/dashboard"
     return (
         <div>
             {/* <button onClick={handleClick}>click me</button> */}

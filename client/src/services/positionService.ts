@@ -14,7 +14,6 @@ export const getAllPositions = async () => {
 };
 
 export const createPosition = async (newPosition: Position) => {
-    console.log(newPosition);
     try {
         const response = await apiClient.post<Position>(baseUrl, newPosition);
         return response.data;

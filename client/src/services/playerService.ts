@@ -13,7 +13,7 @@ export const getAllPlayers = async () => {
 };
 
 export const createPlayer = async (newPlayer: Player) => {
-    console.log(newPlayer);
+    console.log("newPlayer ", newPlayer);
     const response = await apiClient.post<Player>(baseUrl, newPlayer);
     return response.data;
 };

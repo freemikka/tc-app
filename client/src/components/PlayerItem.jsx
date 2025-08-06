@@ -7,7 +7,6 @@ import { usePositions } from "../hooks/usePositions";
 import AddPlayerForm from "./AddPlayerForm";
 // Player ID based styling
 const getPlayerStyle = (playerId, playerColor, positionName) => {
-    console.log(positionName);
     // If player has specific styling
     return {
         padding: "2px",
@@ -52,12 +51,10 @@ const PlayerItem = ({ player, onDrop }) => {
     }));
 
     const handleMenuClick = useCallback((MENU_TYPE, MENU_ACTION) => {
-        console.log(MENU_TYPE);
         if (MENU_TYPE === "DELETE") {
             //delete player
             mutateDeletePlayer(player.id);
         } else if (MENU_TYPE === "UPDATE PLAYER") {
-            console.log("here");
             return <AddPlayerForm />;
         } else if (MENU_TYPE === "UPDATE POSITION") {
             mutatePlayerPosition({

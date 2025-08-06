@@ -19,7 +19,6 @@ function Navbar({ gender, isTraining }) {
         isLoading: isProfileLoading,
         isError: isProfileError,
     } = useProfile();
-    console.log("profile ", profile);
     const route =
         gender === "Male"
             ? isTraining

@@ -47,6 +47,8 @@ export const authMiddleware = async (
             nodeCache.set(token, user);
         }
 
+        console.log("AUTH MIDDLEWARE");
+
         req.user = user; // Now properly assigned
         next();
         // Attach user to request for downstream handlers

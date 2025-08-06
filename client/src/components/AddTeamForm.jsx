@@ -60,7 +60,6 @@ const AddTeamForm = () => {
     });
 
     function onSubmit(values) {
-        console.log(values);
         if (values.type) {
             createTrainingGroup({
                 name: values.teamName,

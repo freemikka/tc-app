@@ -32,6 +32,7 @@ router.post(
     positionMiddleware,
     async (req, res) => {
         try {
+            console.log("here");
             const team_id = req.team_id;
             const association_id = req.association_id;
             const position_id = req.position_id;

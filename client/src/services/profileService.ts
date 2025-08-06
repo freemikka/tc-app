@@ -31,7 +31,6 @@ export const createProfile = async (userId: string) => {
 
 export const updateProfile = async (association: Association) => {
     try {
-        console.log(association);
         const response = await apiClient.put(baseUrl, association);
         return { success: true, data: response.data };
     } catch (error) {

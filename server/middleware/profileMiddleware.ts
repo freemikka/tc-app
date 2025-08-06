@@ -31,9 +31,12 @@ export const profileMiddleware = async (
             .single(); // Ensure we get a single record
 
         if (error) {
+            console.log("this one?");
             console.error("Supabase error:", error);
             return res.status(500).json({ error: "Database error" });
         }
+
+        console.log(profile);
 
         if (!profile) {
             return res.status(404).json({ error: "Profile not found" });
@@ -41,6 +44,7 @@ export const profileMiddleware = async (
 
         // Attach association_id to the request
         req.association_id = profile.association_id;
+        console.log("PROFILE");
         next();
     } catch (error) {
         console.error("Error in profileMiddleware:", error);

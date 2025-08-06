@@ -39,8 +39,6 @@ const Navbar = () => {
         ExcelDownload();
     };
 
-    // console.log(location);
-
     const pathToOtherGroup = () => {
         const purePath = location.pathname.slice(1);
         if (purePath.startsWith("traininggroep-")) {

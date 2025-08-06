@@ -23,7 +23,6 @@ export const getTeamsWithPlayers = async (
     gender: string
 ): Promise<TeamWithPlayers[]> => {
     const response = await apiClient.get(`${baseUrl}/with-players/${gender}`);
-    console.log(response.data);
     return response.data.map(mapTeamWithPlayers);
 };
 
