@@ -81,27 +81,28 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
         if (!newTeamId) return;
 
         const previousTeams = queryClient.getQueryData([queryKey]) || [];
-        // console.log("previousTeams", previousTeams);
 
         // Optimistic update
         queryClient.setQueryData([queryKey], (oldTeams) => {
-            // console.log(oldTeams);
             return oldTeams.map((team) => {
-                // Remove player from old team
-                if (team.players.some((p) => p.id === player.id)) {
-                    return {
-                        ...team,
-                        players: team.players.filter((p) => p.id !== player.id),
-                    };
+                let updatedPlayers = team.players;
+
+                // Remove player from the team if they're in it
+                if (updatedPlayers.some((p) => p.id === player.id)) {
+                    updatedPlayers = updatedPlayers.filter(
+                        (p) => p.id !== player.id
+                    );
                 }
-                // Add player to new team
+
+                // Add player if this is the new team
                 if (team.id === newTeamId) {
-                    return {
-                        ...team,
-                        players: [...team.players, player],
-                    };
+                    updatedPlayers = [...updatedPlayers, player];
                 }
-                return team;
+
+                return {
+                    ...team,
+                    players: updatedPlayers,
+                };
             });
         });
 
@@ -159,6 +160,8 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                     paddingBottom: "100px", // Space for scrollbar
                     marginBottom: "-6px", // Pulls scrollbar into padding area
                     scrollbarGutter: "stable", // Prevents layout shift (modern browsers)
+                    background:
+                        "radial-gradient(125% 125% at 50% 90%, #fff 40%, #0e671d 100%)",
                 }}
             >
                 <div
@@ -170,14 +173,12 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                 >
                     {hideTheseTeams.length !== 0 ? (
                         <div className="space-y-4">
-                            {" "}
                             {/* Added wrapper div with spacing */}
                             <h3 className="text-lg font-semibold">
                                 Hidden Teams
-                            </h3>{" "}
+                            </h3>
                             {/* Heading */}
                             <div className="flex flex-wrap gap-2">
-                                {" "}
                                 {/* Button container */}
                                 {hideTheseTeams.map((hiddenTeam) => (
                                     <button
@@ -195,7 +196,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                                             handleSetTeamVisibile(hiddenTeam.id)
                                         }
                                     >
-                                        {hiddenTeam.Teams?.name}{" "}
+                                        {hiddenTeam.Teams?.name}
                                         {hiddenTeam.TrainingGroups?.name}
                                     </button>
                                 ))}

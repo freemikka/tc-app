@@ -3,14 +3,23 @@ import AddPlayerForm from "./AddPlayerForm";
 import AddTeamForm from "./AddTeamForm";
 import AddTrainingGroupForm from "./AddTrainingGroupForm";
 import { signOutUser } from "../services/authService";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useNavigate, useLocation } from "react-router-dom";
-import ExcelDownload from "../features/excelDownload";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate, useLocation, replace } from "react-router-dom";
+import { useProfile } from "../hooks/useProfile";
+import ExcelDownload from "../features/excelDownload"; // Uses some NodeJs library that isnt supported in the browser TODO
+import ShowJoinRequests from "./ShowJoinRequests";
+import { Button } from "@/components/ui/button";
 
 function Navbar({ gender, isTraining }) {
     const [activeModal, setActiveModal] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
+    const {
+        data: profile,
+        isLoading: isProfileLoading,
+        isError: isProfileError,
+    } = useProfile();
+    console.log("profile ", profile);
     const route =
         gender === "Male"
             ? isTraining
@@ -26,9 +35,8 @@ function Navbar({ gender, isTraining }) {
     const handleSignOut = async () => {
         const error = await signOutUser();
         if (!error) {
-            console.log("handleSignOut");
-            queryClient.invalidateQueries({ queryKey: ["authSession"] });
-            navigate("/login");
+            queryClient.removeQueries({ queryKey: ["authSession"] });
+            navigate("/login", { replace: true });
         } else {
             console.error("Sign out failed:", error);
         }
@@ -45,7 +53,9 @@ function Navbar({ gender, isTraining }) {
                     {/* Logo */}
                     <div className="flex-shrink-0">
                         <span className="text-white font-bold text-xl">
-                            YourLogo
+                            {!isProfileLoading &&
+                                !isProfileError &&
+                                profile.Associations?.name}
                         </span>
                     </div>
                     {/* Desktop Menu */}
@@ -68,6 +78,12 @@ function Navbar({ gender, isTraining }) {
                             >
                                 Create Excel Printout
                             </button>
+                            <Button
+                                variant="outline"
+                                onClick={() => openModal("AddTeam")}
+                            >
+                                Hey 2
+                            </Button>
                             <button
                                 onClick={() => openModal("AddTeam")}
                                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -78,7 +94,7 @@ function Navbar({ gender, isTraining }) {
                                 onClick={() => {
                                     openModal("addPlayer");
                                 }}
-                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                             >
                                 Add player
                             </button>
@@ -86,18 +102,23 @@ function Navbar({ gender, isTraining }) {
                                 onClick={() => {
                                     openModal("addTrainingGroup");
                                 }}
-                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                             >
                                 Add Training Group
                             </button>
                         </div>
                     </div>
+                    {/* Requests */}
+                    {!isProfileLoading &&
+                        !isProfileError &&
+                        profile.association_id && <ShowJoinRequests />}
                     <button
                         onClick={handleSignOut}
-                        className="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-medium py-2 px-4 rounded transition-colors"
+                        className="bg-red-500 hover:bg-red-600 hover:cursor-pointer px-3 py-3 text-sm rounded bg-blue-500 text-white"
                     >
                         Sign out
                     </button>
+
                     {/* Mobile menu button */}
                     <div className="md:hidden">
                         <button

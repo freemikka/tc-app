@@ -9,6 +9,7 @@ export interface Player {
 
 export interface Position {
     positionId: number;
+    associationId: number;
     positionName: string;
     positionColor: string;
 }
@@ -36,4 +37,13 @@ export interface Team {
 export interface trainingGroup {
     name: string;
     gender: string;
+}
+
+export interface Association {
+    name: string;
+}
+
+export interface AcceptRequestData {
+    userId: string;
+    associationId: number;
 }

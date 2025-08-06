@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import PlayerItem from "./PlayerItem";
 import { deleteTeam } from "../services/teamService";
-import { createHiddenTeam } from "../services/hideTeamService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import DotMenu from "./DotMenu";
 import { useCreateHiddenTeam } from "../mutations/createHiddenTeams";
 import { useCreateHiddenTrainingGroups } from "../mutations/createHiddenTrainingGroups";
 import { useDeleteTrainingGroup } from "../mutations/deleteTrainingGroup";
+import { Separator } from "@/components/ui/separator";
 
 const TeamBox = ({ team, onDrop, queryKey }) => {
     const queryClient = useQueryClient();
@@ -26,8 +26,6 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
             boxRef.current.style.backgroundColor = isOver ? "#bfdbfe" : "white";
         }
     }, [isOver]);
-
-    // console.log("Teambox rendered ", team, new Date());
 
     const sortFn = (a, b) => {
         if (a.position.positionId !== b.position.positionId)
@@ -53,9 +51,9 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
         }
     };
 
-    const handleMenuClick = async (option) => {
+    const handleMenuClick = async (MENU_TYPE) => {
         // handleClose();
-        if (option === 0) {
+        if (MENU_TYPE === "DELETE TEAM") {
             try {
                 if (queryKey == "teamsWithPlayers") {
                     await deleteTeam(team.id); // Pass teamId to your service
@@ -72,13 +70,13 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
             }
         }
 
-        if (option === 1) {
+        if (MENU_TYPE === "HIDE TEAM") {
             // Collapse the team so it no longer shows up
             handleHideTeam(team.id);
         }
 
-        if (option === 2) {
-            console.log("not implement");
+        if (MENU_TYPE === "Update team") {
+            console.log("not implemented");
         }
     };
 
@@ -86,17 +84,20 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
         {
             name: "Delete team",
             handleMenuClick: handleMenuClick,
-            option: 0,
+            MENU_TYPE: "DELETE TEAM",
+            MENU_ACTION: null,
         },
         {
             name: "Hide team",
             handleMenuClick: handleMenuClick,
-            option: 1,
+            MENU_TYPE: "HIDE TEAM",
+            MENU_ACTION: null,
         },
         {
             name: "Update team",
             handleMenuClick: handleMenuClick,
-            option: 2,
+            MENU_TYPE: "UPDATE TEAM",
+            MENU_ACTION: null,
         },
     ];
 
@@ -122,19 +123,14 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
                     justifyContent: "space-between",
                 }}
             >
-                <h3
-                    style={{
-                        fontWeight: "bold",
-                        fontSize: "18px",
-                        marginBottom: "8px",
-                    }}
-                >
+                <h2 className="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-2xl">
                     {team.name}
-                </h3>
+                </h2>
+
                 {/* Menu button on the right */}
                 <DotMenu menuItems={menuItems} />
             </div>
-
+            <Separator className="mb-2" />
             <div
                 style={{
                     display: "flex",

@@ -7,38 +7,61 @@ const router = express.Router();
 const baseUrl = "/profiles";
 
 // POST /api/profiles
-router.post(baseUrl, authMiddleware, async (req, res) => {
+router.post(baseUrl, async (req, res) => {
     try {
-        const { name } = req.body; // Get association name from frontend
-        const user_id = req.user?.id; // From auth middleware
+        const { userId } = req.body; // Get association name from frontend
 
-        if (!name) {
-            return res
-                .status(400)
-                .json({ error: "Association name is required" });
-        }
-        if (!user_id) {
-            return res.status(401).json({ error: "User not authenticated" });
-        }
-
-        // 1. Find association ID by name
-        const { data: association, error: lookupError } = await supabase
-            .from("Associations")
-            .select("id")
-            .ilike("name", name) // Case-insensitive search
-            .single(); // Expect only one match
-
-        if (lookupError || !association) {
-            return res.status(404).json({ error: "Association not found" });
+        if (!userId) {
+            return res.status(401).json({ error: "User not applied" });
         }
 
         // 2. Create profile
         const { data: profile, error: createError } = await supabase
             .from("Profiles")
             .insert({
-                user_id,
+                user_id: userId,
+                association_id: null,
+            })
+            .select()
+            .single();
+
+        if (createError) throw createError;
+
+        return res.status(201).json(profile);
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({
+            error: "Failed to create profile",
+            details: error instanceof Error ? error.message : "Unknown error",
+        });
+    }
+});
+
+router.put(baseUrl, authMiddleware, async (req, res) => {
+    try {
+        console.log(req);
+        const { name: associationName } = req.body; // Get association name from frontend
+        const userId = req.user?.id;
+
+        if (!userId) {
+            return res.status(401).json({ error: "User not applied" });
+        }
+        console.log(associationName);
+        const { data: association } = await supabase
+            .from("Associations")
+            .select("*")
+            .eq("name", associationName)
+            .single();
+
+        console.log(association);
+
+        // 2. Create profile
+        const { data: profile, error: createError } = await supabase
+            .from("Profiles")
+            .update({
                 association_id: association.id,
             })
+            .eq("user_id", userId)
             .select()
             .single();
 
@@ -63,9 +86,9 @@ router.get(baseUrl, authMiddleware, async (req, res) => {
         // Fetch profile
         const { data: profile, error: dbError } = await supabase
             .from("Profiles")
-            .select("*")
+            .select("*, Associations(*)")
             .eq("user_id", user_id)
-            .maybeSingle();
+            .single();
 
         if (dbError) throw dbError;
 

@@ -24,11 +24,17 @@ export const associationMiddleware = async (
                 .json({ error: "Unauthorized: User ID missing" });
         }
 
-        // Query Supabase's `profiles` table
-        const { data: profile, error } = await supabase
-            .from("Profiles")
+        if (!req.body) {
+            return res
+                .status(401)
+                .json({ error: "No association name in request" });
+        }
+
+        // Query Supabase's `associations` table
+        const { data: association, error } = await supabase
+            .from("Associations")
             .select("*")
-            .eq("user_id", user_id)
+            .ilike("name", req.body.name)
             .single(); // Ensure we get a single record
 
         if (error) {
@@ -36,15 +42,15 @@ export const associationMiddleware = async (
             return res.status(500).json({ error: "Database error" });
         }
 
-        if (!profile) {
-            return res.status(404).json({ error: "Profile not found" });
+        if (!association) {
+            return res.status(404).json({ error: "Association not found" });
         }
 
         // Attach association_id to the request
-        req.association_id = profile.association_id;
+        req.association_id = association.id;
         next();
     } catch (error) {
         console.error("Error in associationMiddleware:", error);
-        res.status(500).json({ error: "Internal server error" });
+        return res.status(500).json({ error: "Internal server error" });
     }
 };

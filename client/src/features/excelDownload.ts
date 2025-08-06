@@ -4,28 +4,28 @@ import { TeamWithPlayers } from "../types/types";
 import { Player } from "../types/types";
 import * as XLSX from "xlsx-js-style";
 
-const ExcelDownload = async (isTraining: any) => {
+const ExcelDownload = async () => {
     const workbook = XLSX.utils.book_new();
     try {
-        if (!isTraining) {
-            const maleTeams = await getTeamsWithPlayers("Male");
-            const femaleTeams = await getTeamsWithPlayers("Female");
-            handleTeamsData(maleTeams, workbook, "Heren teams");
-            handleTeamsData(femaleTeams, workbook, "Dames teams");
-        } else {
-            const maleTeams = await getTrainingGroupsWithPlayers("Male");
-            const femaleTeams = await getTrainingGroupsWithPlayers("Female");
-            handleTeamsData(
-                maleTeams as TeamWithPlayers[],
-                workbook,
-                "Heren teams"
-            );
-            handleTeamsData(
-                femaleTeams as TeamWithPlayers[],
-                workbook,
-                "Dames teams"
-            );
-        }
+        const maleTeams = await getTeamsWithPlayers("Male");
+        const femaleTeams = await getTeamsWithPlayers("Female");
+        const maleTrainingGroups = await getTrainingGroupsWithPlayers("Male");
+        const femaleTrainingGroups = await getTrainingGroupsWithPlayers(
+            "Female"
+        );
+
+        handleTeamsData(maleTeams, workbook, "Heren teams");
+        handleTeamsData(femaleTeams, workbook, "Dames teams");
+        handleTeamsData(
+            maleTrainingGroups as TeamWithPlayers[],
+            workbook,
+            "Training groep heren"
+        );
+        handleTeamsData(
+            femaleTrainingGroups as TeamWithPlayers[],
+            workbook,
+            "Training groep dames"
+        );
         // Write the workbook to a file
         XLSX.writeFile(workbook, "vertical_teams.xlsx");
     } catch (err) {

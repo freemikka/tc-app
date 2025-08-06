@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { getProfile } from "../services/profileService";
 import PickAssociation from "../components/PickAssociation";
-import { Navigate } from "react-router-dom";
-
+import { Navigate, useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
+import { useLocation } from "react-router-dom";
 import AssociationView from "./AssociationView";
-
 const HomePage = () => {
-    const [association, setAssociation] = useState(null);
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const data = await getProfile();
-                setAssociation(data);
-            } catch (err) {
-                return <Navigate to="/login" replace />;
-            } finally {
-                // setLoading(false);
-            }
-        };
+    const location = useLocation();
 
-        fetchProfile();
-    }, []);
-
+    console.log(location.pathname); // e.g., "/dashboard"
     return (
         <div>
             {/* <button onClick={handleClick}>click me</button> */}
-            <div>{association ? <AssociationView /> : <PickAssociation />}</div>
+            {<AssociationView />}
         </div>
     );
 };
