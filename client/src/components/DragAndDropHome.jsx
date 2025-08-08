@@ -1,9 +1,4 @@
-import React from "react";
 import DragAndDropTeams from "./DragAndDropTeams";
-import Navbar from "./Navbar";
-import { getTeamsWithPlayers } from "../services/teamService";
-import { getTrainingGroupsWithPlayers } from "../services/trainingGroupService";
-import { useQuery } from "@tanstack/react-query";
 import { useTrainingGroupsWithPlayers } from "../hooks/useTrainingGroupsWithPlayers";
 import { useTeamsWithPlayers } from "../hooks/useTeamsWithPlayers";
 

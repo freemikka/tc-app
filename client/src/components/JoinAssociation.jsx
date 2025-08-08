@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getAllAssociations } from "../services/associationService";
 import { useJoinAssociationRequest } from "../mutations/createAssociationJoinRequest";
 

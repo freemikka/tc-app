@@ -1,7 +1,3 @@
-import React, { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCreateTeam } from "../mutations/createTeam";
-import { useTeams } from "../hooks/useTeams";
 import {
     Dialog,
     DialogTrigger,
@@ -18,18 +14,7 @@ import {
     FormLabel,
     FormControl,
     FormMessage,
-    FormDescription,
 } from "@/components/ui/form";
-
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-
-import { Checkbox } from "@/components/ui/checkbox";
 
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -1,9 +1,4 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { createPlayer } from "../services/playerService";
-import { getAllPositions } from "../services/positionService";
-import { getAllTeams } from "../services/teamService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllTrainingGroups } from "../services/trainingGroupService";
 import { useTeams } from "../hooks/useTeams";
 import { useTrainingGroups } from "../hooks/useTrainingGroups";
 import { usePositions } from "../hooks/usePositions";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import supabase from "../utils/supabase"; // Import your supabase client
 import { useNavigate } from "react-router-dom";
 import { createProfile } from "../services/profileService";

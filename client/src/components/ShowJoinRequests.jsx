@@ -5,7 +5,7 @@ import {
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllAssociationJoinRequests } from "../services/associationService";
 import { Check, X } from "lucide-react";
 import { useAcceptAssociation } from "../mutations/acceptJoinAssociation";

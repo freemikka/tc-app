@@ -3,7 +3,6 @@ import CreateAssociation from "./CreateAssociation";
 import React, { useEffect } from "react";
 import { getProfile } from "../services/profileService";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 
 const AssociationPicker = () => {
     // Load associations on component mount

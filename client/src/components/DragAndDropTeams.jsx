@@ -1,18 +1,13 @@
 import React, { useMemo } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { getTeamsWithPlayers } from "../services/teamService";
 import {
     updatePlayerTeam,
     updatePlayerTrainingGroup,
 } from "../services/playerService";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import {
-    deleteHiddenTeam,
-    getAllHiddenTeams,
-} from "../services/hideTeamService";
+import { useQueryClient } from "@tanstack/react-query";
+import { deleteHiddenTeam } from "../services/hideTeamService";
 import supabase from "../utils/supabase";
-import TeamBox from "./TeamBox";
 import { useProfile } from "../hooks/useProfile";
 import { useTeamsHidden } from "../hooks/useTeamsHidden";
 import { useTrainingGroupsHidden } from "../hooks/useTrainingGroupsHidden";

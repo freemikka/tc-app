@@ -7,7 +7,7 @@ export const useCreateTrainingGroup = () => {
         mutationFn: createTrainingGroup,
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["trainingGroupsWithPlayers"],
+                queryKey: ["trainingGroupsWithPlayers", "trainingGroups"],
             });
         },
         onError: (err) => {

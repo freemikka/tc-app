@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useMemo } from "react";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { useRef, useEffect, useMemo } from "react";
+import { useDrop } from "react-dnd";
 import PlayerItem from "./PlayerItem";
 import { deleteTeam } from "../services/teamService";
 import { useQueryClient } from "@tanstack/react-query";

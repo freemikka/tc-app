@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, memo } from "react";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { useCallback, useMemo, memo } from "react";
+import { useDrag } from "react-dnd";
 import DotMenu from "./DotMenu";
 import { useDeletePlayer } from "../mutations/deletePlayer";
 import { useUpdatePlayerPosition } from "../mutations/updatePlayerPosition";

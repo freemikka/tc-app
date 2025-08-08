@@ -6,7 +6,9 @@ export const useCreateTeam = () => {
     return useMutation({
         mutationFn: createTeam,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["teamsWithPlayers"] });
+            queryClient.invalidateQueries({
+                queryKey: ["teamsWithPlayers", ["teams"]],
+            });
         },
         onError: (err) => {
             console.error("Failed creating team:", err.message);

@@ -2,10 +2,10 @@ import { getTeamsWithPlayers } from "../services/teamService";
 import { getTrainingGroupsWithPlayers } from "../services/trainingGroupService";
 import { TeamWithPlayers } from "../types/types";
 import { Player } from "../types/types";
-import * as XLSX from "xlsx-js-style";
+import { utils, writeFile, WorkBook } from "xlsx-js-style";
 
 const ExcelDownload = async () => {
-    const workbook = XLSX.utils.book_new();
+    const workbook = utils.book_new();
     try {
         const maleTeams = await getTeamsWithPlayers("Male");
         const femaleTeams = await getTeamsWithPlayers("Female");
@@ -27,7 +27,7 @@ const ExcelDownload = async () => {
             "Training groep dames"
         );
         // Write the workbook to a file
-        XLSX.writeFile(workbook, "vertical_teams.xlsx");
+        writeFile(workbook, "vertical_teams.xlsx");
     } catch (err) {
         console.log(err);
     }
@@ -35,7 +35,7 @@ const ExcelDownload = async () => {
 
 const handleTeamsData = (
     teams: TeamWithPlayers[],
-    workbook: XLSX.WorkBook,
+    workbook: WorkBook,
     wsName: string
 ) => {
     const sortFn = (a: Player, b: Player) => {
@@ -75,7 +75,7 @@ const handleTeamsData = (
                 if (player) {
                     // Calculate actual Excel row index
                     const excelRow = worksheetData.length + 1; // +1 because Excel rows are 1-indexed
-                    const excelCol = XLSX.utils.encode_col(colIndex); // e.g., 0 => "A", 1 => "B"
+                    const excelCol = utils.encode_col(colIndex); // e.g., 0 => "A", 1 => "B"
                     const cellAddress = `${excelCol}${excelRow}`;
 
                     // Store the player's position at this cell
@@ -94,7 +94,7 @@ const handleTeamsData = (
     });
 
     // Create a worksheet and apply styles
-    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    const worksheet = utils.aoa_to_sheet(worksheetData);
 
     // Example styling function
     const getStyleForPosition = (positionColor: string) => {
@@ -132,7 +132,7 @@ const handleTeamsData = (
     // Create a workbook and append the sheet
     worksheet["!cols"] = Array(3).fill({ wch: 30 });
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, wsName);
+    utils.book_append_sheet(workbook, worksheet, wsName);
 };
 
 // Helper function to chunk the teams into smaller arrays
