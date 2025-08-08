@@ -15,6 +15,8 @@ import { signOutUser } from "../services/authService";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import RequireAssociation from "../guards/RequireAssociation";
+
 const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -48,56 +50,70 @@ const Navbar = () => {
         }
     };
 
+    console.log(profile);
+
     return (
-        <div className="w-full p-0 p-2">
-            <NavigationMenu className="w-full max-w-none justify-start p-0 ">
-                <NavigationMenuList className="flex w-full p-0">
-                    <NavigationMenuItem>
-                        <NavigationMenuLink href="/">
-                            Dashboard
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
+        <>
+            <div className="w-full p-0 p-2">
+                <NavigationMenu className="w-full max-w-none justify-start p-0 ">
+                    <NavigationMenuList className="flex w-full p-0">
+                        {profile?.association_id && (
+                            <>
+                                <NavigationMenuItem>
+                                    <NavigationMenuLink href="/">
+                                        Dashboard
+                                    </NavigationMenuLink>
+                                </NavigationMenuItem>
 
-                    <NavigationMenuItem>
-                        <NavigationMenuLink href={pathToOtherGroup()}>
-                            {pathToOtherGroup()}
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavigationMenuLink
+                                        href={pathToOtherGroup()}
+                                    >
+                                        {pathToOtherGroup()}
+                                    </NavigationMenuLink>
+                                </NavigationMenuItem>
 
-                    {/* Modal-wrapped nav item */}
-                    <NavigationMenuItem>
-                        <AddTeamForm />
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                        <AddPlayerForm />
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                        <AddPositionForm />
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                        <Button variant="ghost" onClick={createExcelPrintout}>
-                            Excel printout
-                        </Button>
-                    </NavigationMenuItem>
-                    {!isProfileLoading &&
-                        !isProfileError &&
-                        profile.association_id && <ShowJoinRequests />}
-                    <div className="ml-auto flex items-center gap-2 mr-4">
-                        <NavigationMenuItem>
-                            <Button
-                                variant="destructive"
-                                onClick={handleSignOut}
-                            >
-                                Sign out
-                            </Button>
-                        </NavigationMenuItem>
-                    </div>
-                </NavigationMenuList>
-            </NavigationMenu>
-            <div className="mt-2">
-                <Separator />
+                                <NavigationMenuItem>
+                                    <AddTeamForm />
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <AddPlayerForm />
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <AddPositionForm />
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <Button
+                                        variant="ghost"
+                                        onClick={createExcelPrintout}
+                                    >
+                                        Excel printout
+                                    </Button>
+                                </NavigationMenuItem>
+
+                                <ShowJoinRequests />
+                            </>
+                        )}
+                        <div className="ml-auto flex items-center gap-2 mr-4">
+                            <NavigationMenuItem>
+                                <Button
+                                    variant="destructive"
+                                    onClick={handleSignOut}
+                                >
+                                    Sign out
+                                </Button>
+                            </NavigationMenuItem>
+                        </div>
+                    </NavigationMenuList>
+                </NavigationMenu>
+                <div className="mt-2">
+                    <Separator />
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

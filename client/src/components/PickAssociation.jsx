@@ -23,22 +23,19 @@ const AssociationPicker = () => {
     }, []);
 
     return (
-        <>
-            <div className="flex flex-col items-center justify-center min-h-screen space-y-6">
-                <div>
-                    Hey! Please join your own association or create a new one.{" "}
-                </div>
-                <div className="flex justify-center space-x-4">
-                    <JoinAssociation />
-                    <CreateAssociation />
-                </div>
-                <div>
-                    <br></br>
-                    When joining an association you must wait until one of the
-                    other members of that association has granted you access.
-                </div>
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] space-y-6 mx-2">
+            <div>
+                Hey! Please join your own association or create a new one.
             </div>
-        </>
+            <div className="flex justify-center space-x-4 mx-2">
+                <JoinAssociation />
+                <CreateAssociation />
+            </div>
+            <div className="mt-4 mx-2">
+                When joining an association you must wait until one of the other
+                members of that association has granted you access.
+            </div>
+        </div>
     );
 };
 

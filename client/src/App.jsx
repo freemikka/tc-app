@@ -14,6 +14,7 @@ import HomePage from "./components/HomePage";
 import DragAndDropHome from "./components/DragAndDropHome";
 import RequireAuth from "./guards/RequireAuth";
 import RequireAssociation from "./guards/RequireAssociation";
+import Navbar from "./Layout/Navbar";
 
 import PickAssocation from "./components/PickAssociation";
 function App() {
@@ -43,6 +44,7 @@ function App() {
     return (
         <Router>
             <Toaster position="top-right" />
+            <Navbar />
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
@@ -55,24 +57,20 @@ function App() {
                     />
                     {/* Association routes */}
                     <Route element={<RequireAssociation />}>
-                        <Route path="/" element={<Layout />}>
-                            <Route path="/" element={<HomePage />} />
+                        <Route path="/" element={<HomePage />} />
 
-                            {genderRoutes.map((route) => (
-                                <Route
-                                    key={route.path}
-                                    path={route.path}
-                                    element={
-                                        <DragAndDropHome
-                                            gender={route.gender}
-                                            isTraining={
-                                                route.type === "training"
-                                            }
-                                        />
-                                    }
-                                />
-                            ))}
-                        </Route>
+                        {genderRoutes.map((route) => (
+                            <Route
+                                key={route.path}
+                                path={route.path}
+                                element={
+                                    <DragAndDropHome
+                                        gender={route.gender}
+                                        isTraining={route.type === "training"}
+                                    />
+                                }
+                            />
+                        ))}
                     </Route>
                 </Route>
             </Routes>

@@ -1,11 +1,11 @@
 // Layout.tsx
 import { Outlet } from "react-router-dom";
-import ShadNav from "./Navbar";
+import Navbar from "./Navbar";
 
 const Layout = () => {
     return (
         <>
-            <ShadNav />
+            <Navbar />
             <Outlet />
         </>
     );
