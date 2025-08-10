@@ -16,7 +16,9 @@ const AssociationView = () => {
                     className="h-16 flex-col gap-1"
                 >
                     <span className="font-semibold">Gents</span>
-                    <span className="text-xs opacity-80">Men's Teams</span>
+                    <span className="text-xs opacity-80">
+                        Go to men's Teams
+                    </span>
                 </Button>
                 <Button
                     size="lg"
@@ -25,7 +27,9 @@ const AssociationView = () => {
                     className="h-16 flex-col gap-1"
                 >
                     <span className="font-semibold">Women</span>
-                    <span className="text-xs opacity-80">Women's Teams</span>
+                    <span className="text-xs opacity-80">
+                        Go to women's Teams
+                    </span>
                 </Button>
             </div>
             <BarChartTeams />
