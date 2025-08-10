@@ -36,9 +36,12 @@ import { Button } from "@/components/ui/button";
 import { useCreateTrainingGroup } from "../mutations/createTrainingGroup";
 
 const formSchema = z.object({
-    teamName: z.string().min(2, {
-        message: "Team name must be at least 2 characters.",
-    }),
+    teamName: z
+        .string()
+        .min(2, {
+            message: "Team name must be at least 2 characters.",
+        })
+        .max(20, { message: "Team name must be at most 15 characters" }),
     gender: z.enum(["Male", "Female"]),
     type: z.boolean(false),
 });

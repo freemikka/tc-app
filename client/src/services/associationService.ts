@@ -28,6 +28,21 @@ export const getAllAssociationJoinRequests = async () => {
     }
 };
 
+export const getAssociationJoinRequests = async (userId: string) => {
+    try {
+        const { data } = await apiClient.get(
+            `${baseUrl}/join-requests/${userId}`
+        );
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.error || "Request failed");
+        } else {
+            throw new Error("Unknown error");
+        }
+    }
+};
+
 export const createAssociation = async (newAssociation: Association) => {
     const { data } = await apiClient.post(baseUrl, newAssociation);
     return data;
@@ -48,6 +63,11 @@ export const acceptAssociationJoinRequest = async (
         userId: userId,
         associationId: associationId,
     });
+    return data;
+};
+
+export const deleteJoinAssociationRequest = async (userId: string) => {
+    const { data } = await apiClient.delete(`${baseUrl}/request/${userId}`);
     return data;
 };
 

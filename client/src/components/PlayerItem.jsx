@@ -75,18 +75,21 @@ const PlayerItem = ({ player, onDrop }) => {
 
         return [
             {
+                id: 1,
                 name: "Delete player",
                 handleMenuClick: handleMenuClick,
                 MENU_TYPE: "DELETE",
                 MENU_ACTION: null,
             },
             {
+                id: 2,
                 name: "Update player",
                 handleMenuClick: handleMenuClick,
                 MENU_TYPE: "UPDATE PLAYER",
                 MENU_ACTION: null,
             },
             ...positions.map((position) => ({
+                id: position.id,
                 name: position.position_name,
                 handleMenuClick: handleMenuClick,
                 MENU_TYPE: "UPDATE POSITION",

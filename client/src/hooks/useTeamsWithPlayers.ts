@@ -3,7 +3,7 @@ import { getTeamsWithPlayers } from "../services/teamService";
 
 export const useTeamsWithPlayers = (gender: string) => {
     return useQuery({
-        queryKey: ["teamsWithPlayers"],
+        queryKey: ["teamsWithPlayers", gender],
         queryFn: () => getTeamsWithPlayers(gender),
     });
 };

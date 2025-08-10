@@ -41,6 +41,26 @@ router.get(
     }
 );
 
+router.get(
+    `${baseUrl}/join-requests/:userId`,
+    authMiddleware,
+    async (req, res) => {
+        try {
+            const userId = req.params.userId;
+            const { data, error } = await supabase
+                .from("AssociationJoinRequests")
+                .select()
+                .eq("user_id", userId);
+
+            if (error) throw error;
+            return res.status(200).json(data);
+        } catch (err) {
+            if (err instanceof Error)
+                return res.status(500).json({ error: err.message });
+        }
+    }
+);
+
 router.post(baseUrl, authMiddleware, async (req, res) => {
     const { data, error } = await supabase
         .from("Associations")
@@ -59,23 +79,33 @@ router.post(
     authMiddleware,
     associationMiddleware,
     async (req, res) => {
-        const association_id = req.association_id;
-        console.log(association_id);
-        const { data, error } = await supabase
-            .from("AssociationJoinRequests")
-            .insert({ user_id: req.user?.id, association_id: association_id })
-            .select()
-            .single();
+        try {
+            const association_id = req.association_id;
+            const { data, error } = await supabase
+                .from("AssociationJoinRequests")
+                .insert({
+                    user_id: req.user?.id,
+                    association_id: association_id,
+                })
+                .select()
+                .single();
 
-        if (error && error.code === "23505") {
-            return res
-                .status(500)
-                .json({ error: "Already trying to join an association" });
+            if (error) {
+                // Check for unique violation on user_id
+                if (error.code === "23505") {
+                    return res.status(400).json({
+                        error: "Already trying to join an association",
+                    });
+                }
+                throw error;
+            }
+
+            return res.status(201).json(data);
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Error)
+                return res.status(500).json({ error: error.message });
         }
-        if (error) {
-            return res.status(500).json({ error: error.message });
-        }
-        return res.status(201).json(data);
     }
 );
 
@@ -115,12 +145,27 @@ router.delete(
             .eq("user_id", userId)
             .select();
 
-        console.log(data);
-        console.log(error);
         if (error) {
             return res.status(500).json({ error: error.message });
         }
+        return res.status(201).json(data);
+    }
+);
 
+router.delete(
+    `${baseUrl}/join-requests/:userId`,
+    authMiddleware,
+    async (req, res) => {
+        const userId = req.params.userId;
+        const { data, error } = await supabase
+            .from("AssociationJoinRequests")
+            .delete()
+            .eq("user_id", userId)
+            .select();
+
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
         return res.status(201).json(data);
     }
 );

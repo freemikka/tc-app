@@ -15,7 +15,6 @@ import { signOutUser } from "../services/authService";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import RequireAssociation from "../guards/RequireAssociation";
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -50,15 +49,29 @@ const Navbar = () => {
         }
     };
 
-    console.log(profile);
-
     return (
         <>
             <div className="w-full p-0 p-2">
                 <NavigationMenu className="w-full max-w-none justify-start p-0 ">
                     <NavigationMenuList className="flex w-full p-0">
                         {profile?.association_id && (
+                            //
                             <>
+                                <NavigationMenuItem
+                                    style={{
+                                        background:
+                                            "radial-gradient(125% 125% at 50% 90%, #fff 40%, #0e671d 100%)",
+                                    }}
+                                    className="
+                                        px-4 py-2
+                                        rounded-full
+                                        text-black font-semibold
+                                        shadow-md
+                                        hover:scale-105
+                                    "
+                                >
+                                    {profile.Associations.name}
+                                </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <NavigationMenuLink href="/">
                                         Dashboard

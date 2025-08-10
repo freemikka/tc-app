@@ -82,18 +82,21 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
 
     const menuItems = [
         {
+            id: 1,
             name: "Delete team",
             handleMenuClick: handleMenuClick,
             MENU_TYPE: "DELETE TEAM",
             MENU_ACTION: null,
         },
         {
+            id: 2,
             name: "Hide team",
             handleMenuClick: handleMenuClick,
             MENU_TYPE: "HIDE TEAM",
             MENU_ACTION: null,
         },
         {
+            id: 3,
             name: "Update team",
             handleMenuClick: handleMenuClick,
             MENU_TYPE: "UPDATE TEAM",
@@ -109,8 +112,12 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
             }}
             style={{
                 padding: "16px",
-                border: "1px solid #ddd",
+                border: "1px solid #eee",
                 borderRadius: "8px",
+                display: "inline-block",
+                whiteSpace: "pre-wrap",
+                overflowWrap: "break-word",
+                maxWidth: "250px",
                 // backgroundColor: isOver ? "#bfdbfe" : "white",
                 // height: `${teamBoxLength}vh`,
             }}
@@ -119,7 +126,6 @@ const TeamBox = ({ team, onDrop, queryKey }) => {
                 style={{
                     display: "flex",
                     flexDirection: "row",
-                    gap: "8px",
                     justifyContent: "space-between",
                 }}
             >

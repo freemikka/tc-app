@@ -31,7 +31,6 @@ export const profileMiddleware = async (
             .single(); // Ensure we get a single record
 
         if (error) {
-            console.log("this one?");
             console.error("Supabase error:", error);
             return res.status(500).json({ error: "Database error" });
         }

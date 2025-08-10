@@ -11,6 +11,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogDescription,
 } from "@/components/ui/dialog";
 
 import {
@@ -74,26 +75,17 @@ const AddPlayerForm = () => {
         }
 
         return baseSchema.extend({
-            position:
+            positionId:
                 positions && positions.length > 0
-                    ? z.enum([
-                          positions[0].position_name,
-                          ...positions.slice(1).map((p) => p.position_name),
-                      ])
+                    ? z.enum(positions.map((p) => String(p.id)))
                     : z.string().optional(),
-            team:
+            teamId:
                 teams && teams.length > 0
-                    ? z.enum([
-                          teams[0].name,
-                          ...teams.slice(1).map((t) => t.name),
-                      ])
+                    ? z.enum(teams.map((t) => String(t.id)))
                     : z.string().optional(),
-            trainingGroup:
+            trainingGroupId:
                 trainingGroups && trainingGroups.length > 0
-                    ? z.enum([
-                          trainingGroups[0].name,
-                          ...trainingGroups.slice(1).map((g) => g.name),
-                      ])
+                    ? z.enum(trainingGroups.map((g) => String(g.id)))
                     : z.string().optional(),
         });
     }, [isLoading, positions, teams, trainingGroups]);
@@ -107,18 +99,15 @@ const AddPlayerForm = () => {
             lastName: "",
             email: "",
             // Add defaults for dynamic fields
-            ...(positions && { position: "" }),
-            ...(teams && { team: "" }),
-            ...(trainingGroups && { trainingGroup: "" }),
+            ...(positions && { positionId: "" }),
+            ...(teams && { teamId: "" }),
+            ...(trainingGroups && { trainingGroupId: "" }),
         },
     });
 
     const onSubmit = (values) => {
         createPlayer({ ...values });
-        form.reset({ position: "" });
-        form.setValue("position", values.position);
-        form.setValue("team", values.team);
-        form.setValue("trainingGroup", values.trainingGroup);
+        form.reset({ positionId: "", teamId: "", trainingGroupId: "" });
     };
 
     if (!formSchema) {
@@ -192,14 +181,14 @@ const AddPlayerForm = () => {
 
                         <FormField
                             control={form.control}
-                            name="team"
+                            name="teamId"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Team</FormLabel>
                                     <FormControl>
                                         <Select
                                             onValueChange={field.onChange}
-                                            value={field.value}
+                                            value={field.value || ""}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select a team" />
@@ -210,7 +199,9 @@ const AddPlayerForm = () => {
                                                     return (
                                                         <SelectItem
                                                             key={team.id}
-                                                            value={team.name}
+                                                            value={String(
+                                                                team.id
+                                                            )}
                                                         >
                                                             {team.name}
                                                         </SelectItem>
@@ -225,14 +216,14 @@ const AddPlayerForm = () => {
                         />
                         <FormField
                             control={form.control}
-                            name="position"
+                            name="positionId"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Position</FormLabel>
                                     <FormControl>
                                         <Select
                                             onValueChange={field.onChange}
-                                            value={field.value}
+                                            value={field.value || ""}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select a position" />
@@ -242,9 +233,9 @@ const AddPlayerForm = () => {
                                                     return (
                                                         <SelectItem
                                                             key={position.id}
-                                                            value={
-                                                                position.position_name
-                                                            }
+                                                            value={String(
+                                                                position.id
+                                                            )}
                                                         >
                                                             {
                                                                 position.position_name
@@ -261,14 +252,14 @@ const AddPlayerForm = () => {
                         />
                         <FormField
                             control={form.control}
-                            name="trainingGroup"
+                            name="trainingGroupId"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Training Group</FormLabel>
                                     <FormControl>
                                         <Select
                                             onValueChange={field.onChange}
-                                            value={field.value}
+                                            value={field.value || ""}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select a training group" />
@@ -281,9 +272,9 @@ const AddPlayerForm = () => {
                                                                 key={
                                                                     trainingGroup.id
                                                                 }
-                                                                value={
-                                                                    trainingGroup.name
-                                                                }
+                                                                value={String(
+                                                                    trainingGroup.id
+                                                                )}
                                                             >
                                                                 {
                                                                     trainingGroup.name

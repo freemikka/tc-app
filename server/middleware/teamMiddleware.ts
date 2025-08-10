@@ -19,9 +19,6 @@ export const teamMiddleware = async (
     try {
         const association_id = req.association_id;
         const team_name = req.body.team;
-        console.log(req.body);
-        console.log(association_id);
-        console.log(team_name);
 
         // Query Supabase's `profiles` table
         const { data: team, error } = await supabase

@@ -4,6 +4,11 @@ import { useCreateAssociation } from "../mutations/createAssociation";
 import { useJoinAssociation } from "../mutations/createJoinAssociation";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+
 const CreateAssociation = () => {
     const [associationName, setAssociationName] = useState("");
 
@@ -20,7 +25,6 @@ const CreateAssociation = () => {
 
     const handleCreateAssociation = (e) => {
         e.preventDefault();
-
         mutateAssociation(
             { name: associationName },
             {
@@ -29,6 +33,9 @@ const CreateAssociation = () => {
                     queryClient.invalidateQueries(["profile"]);
                     navigate(0, { replace: true });
                 },
+                onError: () => {
+                    toast.error("Something went wrong");
+                },
             }
         );
     };
@@ -36,23 +43,20 @@ const CreateAssociation = () => {
     return (
         <div className="ml-8 mt-auto mb-auto">
             <form onSubmit={handleCreateAssociation}>
-                <label className="block">
+                <Label className="block">
                     New association name:
-                    <input
+                    <Input
                         type="text"
                         placeholder="Association name"
                         value={associationName}
                         onChange={handleAssociationChange}
                         required
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="mt-1 block"
                     />
-                </label>
-                <button
-                    type="submit"
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
+                </Label>
+                <Button type="submit" className="mt-2">
                     Create association
-                </button>
+                </Button>
             </form>
         </div>
     );

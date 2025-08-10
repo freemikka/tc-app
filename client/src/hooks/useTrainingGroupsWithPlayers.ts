@@ -3,7 +3,7 @@ import { getTrainingGroupsWithPlayers } from "../services/trainingGroupService";
 
 export const useTrainingGroupsWithPlayers = (gender: string) => {
     return useQuery({
-        queryKey: ["trainingGroupsWithPlayers"],
+        queryKey: ["trainingGroupsWithPlayers", gender],
         queryFn: () => getTrainingGroupsWithPlayers(gender),
     });
 };

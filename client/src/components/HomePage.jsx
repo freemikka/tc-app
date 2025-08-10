@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { getProfile } from "../services/profileService";
-import PickAssociation from "../components/PickAssociation";
-import { Navigate, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom";
 import AssociationView from "./AssociationView";
 const HomePage = () => {
     const location = useLocation();
 
     return (
-        <div>
+        <div
+            style={{
+                background:
+                    "radial-gradient(125% 125% at 50% 90%, #fff 40%, #0e671d 100%)",
+            }}
+        >
             {/* <button onClick={handleClick}>click me</button> */}
             {<AssociationView />}
         </div>

@@ -9,6 +9,7 @@ export const mapPosition = (position: any): Position => ({
     positionId: position.id,
     positionColor: position.position_color,
     positionName: position.position_name,
+    associationId: position.association_id,
 });
 
 export const mapPlayer = (player: any): Player => ({

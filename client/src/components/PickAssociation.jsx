@@ -23,9 +23,18 @@ const AssociationPicker = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] space-y-6 mx-2">
+        <div
+            className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] space-y-6 mx-2"
+            style={{
+                background:
+                    "radial-gradient(125% 125% at 50% 90%, #fff 40%, #0e671d 100%)",
+            }}
+        >
             <div>
-                Hey! Please join your own association or create a new one.
+                <p>
+                    Welcome! Please join your own association or create a new
+                    one.
+                </p>
             </div>
             <div className="flex justify-center space-x-4 mx-2">
                 <JoinAssociation />

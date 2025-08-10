@@ -23,46 +23,43 @@ router.get(baseUrl, authMiddleware, async (_req, res) => {
     res.json(data);
 });
 
-router.post(
-    baseUrl,
-    authMiddleware,
-    profileMiddleware,
-    teamMiddleware,
-    trainingGroupMiddleware,
-    positionMiddleware,
-    async (req, res) => {
-        try {
-            console.log("here");
-            const team_id = req.team_id;
-            const association_id = req.association_id;
-            const position_id = req.position_id;
-            const traininggroup_id = req.traininggroup_id;
-            console.log(position_id);
+router.post(baseUrl, authMiddleware, profileMiddleware, async (req, res) => {
+    try {
+        const association_id = req.association_id;
 
-            const { firstName, lastName, email } = req.body;
-            const { data, error } = await supabase
-                .from("Players")
-                .insert({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    team_id: team_id,
-                    association_id: association_id,
-                    position_id: position_id,
-                    traininggroup_id: traininggroup_id,
-                })
-                .select()
-                .single();
+        const {
+            firstName,
+            lastName,
+            email,
+            teamId,
+            positionId,
+            trainingGroupId,
+        } = req.body;
+        console.log(req.body);
+        const { data, error } = await supabase
+            .from("Players")
+            .insert({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                team_id: teamId,
+                association_id: association_id,
+                position_id: positionId,
+                traininggroup_id: trainingGroupId,
+            })
+            .select()
+            .single();
 
-            if (error) throw error;
+        if (error) throw error;
 
-            return res.status(200).json(data);
-        } catch (error) {
-            if (error instanceof Error)
-                return res.status(500).json({ error: error.message });
-        }
+        console.log("===========================================");
+
+        return res.status(200).json(data);
+    } catch (error) {
+        if (error instanceof Error)
+            return res.status(500).json({ error: error.message });
     }
-);
+});
 
 router.put(
     `${baseUrl}/team`,

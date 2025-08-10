@@ -8,11 +8,15 @@ export const useJoinAssociationRequest = () => {
     return useMutation({
         mutationFn: createAssociationJoinRequest,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["profile"] });
+            queryClient.invalidateQueries({
+                queryKey: ["associationJoinRequests"],
+            });
             toast.success("Sending a join request!");
         },
         onError: (err) => {
-            toast.error(`Error: ${err.message}`);
+            toast.error(
+                `Error: ${(err as any).response?.data.error || err.message}`
+            );
         },
     });
 };

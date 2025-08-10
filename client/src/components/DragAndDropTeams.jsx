@@ -45,32 +45,32 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
         return a.name.localeCompare(b.name);
     });
 
-    React.useEffect(() => {
-        if (isUserLoading) return;
-        // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
-        const channel = supabase
-            .channel(`players-changes-${profile.association_id}`)
-            .on(
-                "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "Players",
-                    filter: `association_id=eq.${profile.association_id}`,
-                },
-                (payload) => {
-                    console.log("payload", payload);
-                    // queryClient.invalidateQueries({ queryKey: [queryKey] });
-                }
-            )
-            .subscribe((status) => {
-                // console.log(status);
-            });
+    // React.useEffect(() => {
+    //     if (isUserLoading) return;
+    //     // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
+    //     const channel = supabase
+    //         .channel(`players-changes-${profile.association_id}`)
+    //         .on(
+    //             "postgres_changes",
+    //             {
+    //                 event: "*",
+    //                 schema: "public",
+    //                 table: "Players",
+    //                 filter: `association_id=eq.${profile.association_id}`,
+    //             },
+    //             (payload) => {
+    //                 console.log("payload", payload);
+    //                 // queryClient.invalidateQueries({ queryKey: [queryKey] });
+    //             }
+    //         )
+    //         .subscribe((status) => {
+    //             // console.log(status);
+    //         });
 
-        return () => {
-            channel.unsubscribe();
-        };
-    }, [profile]);
+    //     return () => {
+    //         channel.unsubscribe();
+    //     };
+    // }, [profile]);
 
     const handlePlayerDrop = async (player, newTeamId) => {
         if (!newTeamId) return;
@@ -142,10 +142,11 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
             <div
                 style={{
                     display: "grid",
-                    gridTemplateColumns:
-                        "100px repeat(auto-fit, minmax(250px, 250px))",
+                    gridTemplateColumns: `${
+                        hideTheseTeams.length === 0 ? 0 : 100
+                    }px repeat(auto-fit, minmax(250px, 250px))`,
                     gap: "16px",
-                    gridAutoColumns: "minmax(200px, 200px)",
+                    gridAutoColumns: "minmax(200px, 250px)",
                     padding: "16px",
                     overflowX: "auto", // Enable horizontal scrolling
                     // overflowY: "hidden", // Disable vertical scrolling
@@ -166,7 +167,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                         gridAutoColumns: "minmax(30px, 75px)",
                     }}
                 >
-                    {hideTheseTeams.length !== 0 ? (
+                    {hideTheseTeams.length !== 0 && (
                         <div className="space-y-4">
                             {/* Added wrapper div with spacing */}
                             <h3 className="text-lg font-semibold">
@@ -197,8 +198,6 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
                                 ))}
                             </div>
                         </div>
-                    ) : (
-                        <div>No teams hidden</div>
                     )}
                 </div>
                 {sortedvisibleTeams.map((team) => (

@@ -3,35 +3,30 @@ import dotenv from "dotenv";
 import supabase from "../supabase/supabase.js";
 import { authMiddleware } from "../middleware/auth.js";
 import { profileMiddleware } from "../middleware/profileMiddleware.js";
+import { associationMiddleware } from "../middleware/associationMiddleware.js";
 
 dotenv.config();
 
 const router = express.Router();
 const baseUrl = "/positions";
 
-router.get(
-    baseUrl,
-    authMiddleware,
-    profileMiddleware,
-    authMiddleware,
-    async (req, res) => {
-        const association_id = req.association_id;
-        const { data, error } = await supabase.from("Positions").select();
+router.get(baseUrl, authMiddleware, profileMiddleware, async (req, res) => {
+    const association_id = req.association_id;
+    const { data, error } = await supabase
+        .from("Positions")
+        .select()
+        .eq("association_id", association_id);
 
-        if (error) {
-            console.error("Error fetching positions:", error);
-            return res.status(500).json({ error: error.message });
-        }
-
-        res.json(data);
+    if (error) {
+        console.error("Error fetching positions:", error);
+        return res.status(500).json({ error: error.message });
     }
-);
+
+    res.json(data);
+});
 
 router.post(baseUrl, authMiddleware, profileMiddleware, async (req, res) => {
     try {
-        console.log("hello");
-        console.log(req.body);
-        console.log(req.association_id);
         const newPosition = req.body;
         const association_id = req.association_id;
         // 2. Create profile

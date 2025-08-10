@@ -44,33 +44,38 @@ function App() {
     return (
         <Router>
             <Toaster position="top-right" />
-            <Navbar />
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
 
                 {/* Protected routes */}
                 <Route element={<RequireAuth />}>
-                    <Route
-                        path="join-association"
-                        element={<PickAssocation />}
-                    />
+                    <Route element={<Layout />}>
+                        <Route
+                            path="join-association"
+                            element={<PickAssocation />}
+                        />
+                    </Route>
                     {/* Association routes */}
                     <Route element={<RequireAssociation />}>
-                        <Route path="/" element={<HomePage />} />
+                        <Route element={<Layout />}>
+                            <Route path="/" element={<HomePage />} />
 
-                        {genderRoutes.map((route) => (
-                            <Route
-                                key={route.path}
-                                path={route.path}
-                                element={
-                                    <DragAndDropHome
-                                        gender={route.gender}
-                                        isTraining={route.type === "training"}
-                                    />
-                                }
-                            />
-                        ))}
+                            {genderRoutes.map((route) => (
+                                <Route
+                                    key={route.path}
+                                    path={route.path}
+                                    element={
+                                        <DragAndDropHome
+                                            gender={route.gender}
+                                            isTraining={
+                                                route.type === "training"
+                                            }
+                                        />
+                                    }
+                                />
+                            ))}
+                        </Route>
                     </Route>
                 </Route>
             </Routes>

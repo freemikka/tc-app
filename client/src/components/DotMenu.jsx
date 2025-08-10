@@ -38,7 +38,7 @@ const DotMenu = ({ menuItems }) => {
                     {menuItems.map((menuItem) => {
                         return (
                             <MenuItem
-                                key={menuItem.name}
+                                key={menuItem.id}
                                 id={menuItem.name}
                                 onClick={() =>
                                     menuItem.handleMenuClick(

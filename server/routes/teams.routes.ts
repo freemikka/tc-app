@@ -26,7 +26,7 @@ router.get(
             res.json(teams);
         } catch (error) {
             console.error("Error fetching teams:", error);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: error });
         }
     }
 );
@@ -53,7 +53,7 @@ router.get(
             res.json(teamsWithPlayers);
         } catch (error) {
             console.error("Error fetching teams with players:", error);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: error });
         }
     }
 );
@@ -83,6 +83,7 @@ async function getTeamsWithPlayers(
         team_id,
         position:position_id (
             id,
+            association_id,
             position_name,
             position_color
         )
@@ -115,14 +116,12 @@ router.post(
         try {
             const association_id = req.association_id;
             const { name, gender } = req.body;
-            console.log(name);
-            console.log(gender);
-            console.log(association_id);
             const { data: currentTeams } = await supabase
                 .from("Teams")
                 .select("*")
                 .eq("gender", gender)
-                .eq("name", name);
+                .eq("name", name)
+                .eq("association_id", association_id);
 
             if (currentTeams && currentTeams.length > 0) {
                 throw new Error(
@@ -144,9 +143,9 @@ router.post(
             }
 
             res.json(teams);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error fetching teams:", error);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: error.message });
         }
     }
 );

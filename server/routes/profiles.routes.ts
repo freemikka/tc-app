@@ -92,6 +92,8 @@ router.get(baseUrl, authMiddleware, async (req, res) => {
 
         if (dbError) throw dbError;
 
+        console.log(profile);
+
         return res.json(profile || null);
     } catch (error) {
         console.error("Profile fetch error:", error);

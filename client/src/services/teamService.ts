@@ -2,6 +2,7 @@ import { Team } from "../types/types";
 import { TeamWithPlayers } from "../types/types";
 import { mapTeamWithPlayers } from "../utils/mapper";
 import apiClient from "../api/client";
+import { AxiosError } from "axios";
 const baseUrl = "/teams";
 
 export const getAllTeams = async () => {
@@ -15,8 +16,15 @@ export const getAllTeams = async () => {
 };
 
 export const createTeam = async (newTeam: Team) => {
-    const response = await apiClient.post<Team>(baseUrl, newTeam);
-    return response.data;
+    try {
+        const response = await apiClient.post<Team>(baseUrl, newTeam);
+        return response.data;
+    } catch (error: any) {
+        if (error instanceof AxiosError) {
+            throw error as AxiosError;
+        }
+        throw error;
+    }
 };
 
 export const getTeamsWithPlayers = async (
