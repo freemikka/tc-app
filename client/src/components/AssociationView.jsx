@@ -8,14 +8,24 @@ const AssociationView = () => {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div>
-                <div className="mt-2">Ga naar heren of dames pagina</div>
-
-                <Button onClick={() => navigate("/heren", { replace: true })}>
-                    Heren
+            {/* Option 3: Side-by-side layout */}
+            <div className="grid grid-cols-2 gap-3 mt-8 ml-2">
+                <Button
+                    size="lg"
+                    onClick={() => navigate("/heren", { replace: true })}
+                    className="h-16 flex-col gap-1"
+                >
+                    <span className="font-semibold">Gents</span>
+                    <span className="text-xs opacity-80">Men's Teams</span>
                 </Button>
-                <Button onClick={() => navigate("/dames", { replace: true })}>
-                    Dames
+                <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() => navigate("/dames", { replace: true })}
+                    className="h-16 flex-col gap-1"
+                >
+                    <span className="font-semibold">Women</span>
+                    <span className="text-xs opacity-80">Women's Teams</span>
                 </Button>
             </div>
             <BarChartTeams />

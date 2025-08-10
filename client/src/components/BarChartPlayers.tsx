@@ -44,8 +44,6 @@ export function BarChartPlayers({ gender }: BarChartPlayersProps) {
         }, {}),
     } satisfies ChartConfig;
 
-    console.log("positions", positions);
-
     const chartData = useMemo(() => {
         // Create a template with all positions set to 0
         const positionTemplate =
@@ -72,7 +70,6 @@ export function BarChartPlayers({ gender }: BarChartPlayersProps) {
                 ...teamPositionCount,
             };
         });
-        console.log("positionCountsByTeam", positionCountsByTeam);
 
         return positionCountsByTeam;
     }, [teamsWithPlayers, positions]);
