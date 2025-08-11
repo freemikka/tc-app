@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTrainingGroup } from "../services/trainingGroupService";
+import { toast } from "sonner";
 
 export const useCreateTrainingGroup = () => {
     const queryClient = useQueryClient();
@@ -7,8 +8,9 @@ export const useCreateTrainingGroup = () => {
         mutationFn: createTrainingGroup,
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["trainingGroupsWithPlayers", "trainingGroups"],
+                queryKey: ["trainingGroupsWithPlayers"],
             });
+            toast.success("Created training group");
         },
         onError: (err) => {
             console.error("Failed creating team:", err.message);

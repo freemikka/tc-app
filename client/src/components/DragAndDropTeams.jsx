@@ -45,32 +45,32 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
         return a.name.localeCompare(b.name);
     });
 
-    // React.useEffect(() => {
-    //     if (isUserLoading) return;
-    //     // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
-    //     const channel = supabase
-    //         .channel(`players-changes-${profile.association_id}`)
-    //         .on(
-    //             "postgres_changes",
-    //             {
-    //                 event: "*",
-    //                 schema: "public",
-    //                 table: "Players",
-    //                 filter: `association_id=eq.${profile.association_id}`,
-    //             },
-    //             (payload) => {
-    //                 console.log("payload", payload);
-    //                 // queryClient.invalidateQueries({ queryKey: [queryKey] });
-    //             }
-    //         )
-    //         .subscribe((status) => {
-    //             // console.log(status);
-    //         });
+    React.useEffect(() => {
+        if (isUserLoading) return;
+        // queryClient.invalidateQueries({ queryKey: ["trainingGroups"] });
+        const channel = supabase
+            .channel(`players-changes-${profile.association_id}`)
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "Players",
+                    filter: `association_id=eq.${profile.association_id}`,
+                },
+                (payload) => {
+                    console.log("payload", payload);
+                    // queryClient.invalidateQueries({ queryKey: [queryKey] });
+                }
+            )
+            .subscribe((status) => {
+                // console.log(status);
+            });
 
-    //     return () => {
-    //         channel.unsubscribe();
-    //     };
-    // }, [profile]);
+        return () => {
+            channel.unsubscribe();
+        };
+    }, [profile]);
 
     const handlePlayerDrop = async (player, newTeamId) => {
         if (!newTeamId) return;
@@ -78,7 +78,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
         const previousTeams = queryClient.getQueryData([queryKey]) || [];
 
         // Optimistic update
-        queryClient.setQueryData([queryKey], (oldTeams) => {
+        queryClient.setQueryData([queryKey, gender], (oldTeams) => {
             return oldTeams.map((team) => {
                 let updatedPlayers = team.players;
 

@@ -27,17 +27,38 @@ router.get(
     profileMiddleware,
     async (req, res) => {
         const association_id = req.association_id;
+        const user_id = req.user?.id;
         console.log(association_id);
         const { data, error } = await supabase
             .from("AssociationJoinRequests")
-            .select("*")
+            .select()
             .eq("association_id", association_id);
 
         if (error) {
             return res.status(500).json({ error: error.message });
         }
 
-        return res.status(200).json(data);
+        const userIds = data.map((request) => request.user_id);
+
+        // Use auth admin to get user details
+        const {
+            data: { users },
+            error: usersError,
+        } = await supabase.auth.admin.listUsers();
+
+        if (usersError) {
+            console.error("Error fetching users:", usersError);
+            return;
+        }
+
+        // Filter and combine the data
+        const relevantUsers = users.filter((user) => userIds.includes(user.id));
+        const requestsWithUsers = data.map((request) => ({
+            ...request,
+            user: relevantUsers.find((user) => user.id === request.user_id),
+        }));
+
+        return res.status(200).json(requestsWithUsers);
     }
 );
 

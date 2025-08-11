@@ -8,7 +8,7 @@ export const useCreateTeam = () => {
         mutationFn: createTeam,
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["teamsWithPlayers", "trainingGroupWithPlayers"],
+                queryKey: ["teamsWithPlayers"],
             });
             toast.success("Created a new team");
         },

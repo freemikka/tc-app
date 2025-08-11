@@ -21,6 +21,7 @@ export function ShowJoinRequests() {
             try {
                 const response = await getAllAssociationJoinRequests();
                 setAllJoinRequests(response);
+                console.log(response);
             } catch (err) {
                 console.error("Error fetching join requests:", err);
             }
@@ -58,7 +59,7 @@ export function ShowJoinRequests() {
                             key={request.id}
                             className="flex items-center gap-2"
                         >
-                            {request.user_id}
+                            {request.user.email}
                             <Button
                                 onClick={() =>
                                     handleAccept(
