@@ -75,7 +75,8 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
     const handlePlayerDrop = async (player, newTeamId) => {
         if (!newTeamId) return;
 
-        const previousTeams = queryClient.getQueryData([queryKey]) || [];
+        const previousTeams =
+            queryClient.getQueryData([queryKey, gender]) || [];
 
         // Optimistic update
         queryClient.setQueryData([queryKey, gender], (oldTeams) => {
@@ -113,7 +114,7 @@ const DragAndDropTeams = ({ gender, data, queryKey }) => {
         } catch (error) {
             console.error("Failed to update player team:", error);
             // Revert on error
-            queryClient.setQueryData([queryKey], previousTeams);
+            queryClient.setQueryData([queryKey, gender], previousTeams);
         }
     };
 
