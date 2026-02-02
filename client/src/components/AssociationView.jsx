@@ -2,10 +2,25 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BarChartTeams } from "@/components/BarChartTeams";
 import { BarChartPlayers } from "@/components/BarChartPlayers";
+import { ChangePasswordDialog } from "@/components/ChangePasswordDialog";
+import { changePassword } from "@/services/authService";
+import { toast } from "sonner";
 
 const AssociationView = () => {
     const navigate = useNavigate(); // For redirection
 
+    const handlePasswordChange = async (data) => {
+        try {
+            await changePassword({
+                currentPassword: data.currentPassword,
+                newPassword: data.newPassword,
+            });
+            toast.success("Password succesfully changed");
+        } catch (error) {
+            toast.error("Something went wrong");
+            throw error;
+        }
+    };
     return (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {/* Option 3: Side-by-side layout */}
@@ -35,6 +50,7 @@ const AssociationView = () => {
             <BarChartTeams />
             <BarChartPlayers gender="Male" />
             <BarChartPlayers gender="Female" />
+            <ChangePasswordDialog onPasswordChange={handlePasswordChange} />
         </div>
     );
 };
